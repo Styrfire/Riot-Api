@@ -1,0 +1,28 @@
+apply plugin: 'groovy'
+apply plugin: 'java'
+
+jar
+{
+	baseName = 'gs-rest-service'
+	version =  '0.1.0'
+}
+
+repositories
+{
+	mavenCentral()
+}
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+dependencies 
+{
+	compile 'com.google.guava:guava:17.0'
+	compile 'com.google.code.gson:gson:2.8.0'
+	compile 'javax.inject:javax.inject:1'
+	compile "org.codehaus.groovy:groovy-all:2.4.5"
+	compile 'org.springframework.boot:spring-boot-gradle-plugin:1.4.2.RELEASE'
+	compile 'org.springframework.boot:spring-boot-starter-web'
+
+	testCompile 'org.springframework.boot:spring-boot-starter-test'
+}
