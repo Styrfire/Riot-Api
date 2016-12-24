@@ -1,30 +1,31 @@
 package com.riot.api;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import riotApi.dto.MatchList;
-import riotApi.dto.Summoner;
+import com.riot.dto.Summoner;
 
-import javax.inject.Inject;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-@Service
 public class RiotApi
 {
 	private QueryManager queryManager;
+	private SummonerAPI summonerApi;
 
 	public RiotApi()
 	{
 		this.queryManager = new QueryManager();
+		this.summonerApi = new SummonerAPI();
 	}
 
-	public Map<String, Summoner> getSummonersByName(String... summonerNames)
+	public Map<String, Summoner> getSummonersByName(String... summonerName)
+	{
+		return summonerApi.getSummonersByName(queryManager, summonerName);
+	}
+
+	public Summoner getSummonerByName(String summonerName)
+	{
+		return summonerApi.getSummonerByName(queryManager, summonerName);
+	}
+
+/*	public Map<String, Summoner> getSummonersByName(String... summonerNames)
 	{
 		System.out.println("summonerNames.toString() = " + summonerNames.length);
 		for (int i = 0; i < summonerNames.length; i++)
@@ -45,9 +46,9 @@ public class RiotApi
 	{
 		summonerName = summonerName.toLowerCase().replace(" ", "");
 		return getSummonersByName(summonerName).get(summonerName);
-	}
+	}*/
 
-	public MatchList getMatchListBySummonerId(Integer summonerId, int[] championIds, String[] rankedQueues, String[] seasons)
+/*	public MatchList getMatchListBySummonerId(Integer summonerId, int[] championIds, String[] rankedQueues, String[] seasons)
 	{
 		String queryString = "" + summonerId;
 		if (championIds != null)
@@ -71,5 +72,5 @@ public class RiotApi
 		String response = queryManager.query(queryString);
 
 		return new Gson().fromJson(response, MatchList.class);
-	}
+	}*/
 }
