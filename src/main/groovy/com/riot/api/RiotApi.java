@@ -7,12 +7,12 @@ import java.util.Map;
 public class RiotApi
 {
 	private QueryManager queryManager;
-	private SummonerAPI summonerApi;
+	private SummonerApi summonerApi;
 
 	public RiotApi()
 	{
 		this.queryManager = new QueryManager();
-		this.summonerApi = new SummonerAPI();
+		this.summonerApi = new SummonerApi();
 	}
 
 	public Map<String, Summoner> getSummonersByName(String... summonerName)

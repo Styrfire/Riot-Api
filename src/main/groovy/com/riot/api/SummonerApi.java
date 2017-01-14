@@ -8,7 +8,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SummonerAPI
+public class SummonerApi
 {
 	Map<String, Summoner> getSummonersByName(QueryManager queryManager, String... summonerNames)
 	{
@@ -31,15 +31,5 @@ public class SummonerAPI
 	{
 		summonerName = summonerName.toLowerCase().replace(" ", "");
 		return getSummonersByName(queryManager, summonerName).get(summonerName);
-	}
-
-	public Map<String, Summoner> getSummonersById(QueryManager queryManager, String summonerName)
-	{
-		String response = queryManager.query("https://na.api.pvp.net/api/lol/na/v1.4/summoner/by-name/" + summonerName);
-		Type mapType = new TypeToken<HashMap<String,Summoner>>(){}.getType();
-		Map<String, Summoner> summoner = summoner = new Gson().fromJson(response, mapType);
-
-		return summoner;
-
 	}
 }
