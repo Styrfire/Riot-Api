@@ -1,8 +1,6 @@
 package com.riot.api;
 
 import com.google.common.util.concurrent.RateLimiter;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -36,7 +34,7 @@ public class QueryManager
 			shortRateLimiter.acquire();
 			longRateLimiter.acquire();
 
-			URL url = new URL("https://na.api.pvp.net" + queryUrl + "?api_key=e76cf560-ec14-4aae-946c-35967340214d");
+			URL url = new URL("https://na1.api.riotgames.com" + queryUrl + "?api_key=e76cf560-ec14-4aae-946c-35967340214d");
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setDoOutput(true);

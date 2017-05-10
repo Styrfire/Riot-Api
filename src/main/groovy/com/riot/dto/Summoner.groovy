@@ -2,9 +2,10 @@ package com.riot.dto
 
 class Summoner
 {
-	long id
-	String name
 	int profileIconId
-	long revisionDate
+	String name
 	long summonerLevel
+	long revisionDate
+	long id
+	long accountId
 }

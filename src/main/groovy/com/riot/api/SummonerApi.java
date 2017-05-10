@@ -10,26 +10,16 @@ import java.util.Map;
 
 public class SummonerApi
 {
-	Map<String, Summoner> getSummonersByName(QueryManager queryManager, String... summonerNames)
+	Summoner getSummonerByName(QueryManager queryManager, String summonerName)
 	{
-		System.out.println("summonerNames.toString() = " + summonerNames.length);
-		for (int i = 0; i < summonerNames.length; i++)
-			summonerNames[i] = summonerNames[i].toLowerCase().replace(" ", "");
+		System.out.println("summonerName = " + summonerName);
+		summonerName = summonerName.replace(" ", "%20");
 
-		String queryString = "/api/lol/na/v1.4/summoner/by-name/" + summonerNames[0];
-		for (int i = 1; i < summonerNames.length; i++)
-			queryString += "," + summonerNames[i];
+		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName;
 
 		System.out.println("queryString = " + queryString);
 		String response = queryManager.query(queryString);
-		Type mapType = new TypeToken<HashMap<String,Summoner>>(){}.getType();
 
-		return new Gson().fromJson(response, mapType);
-	}
-
-	Summoner getSummonerByName(QueryManager queryManager, String summonerName)
-	{
-		summonerName = summonerName.toLowerCase().replace(" ", "");
-		return getSummonersByName(queryManager, summonerName).get(summonerName);
+		return new Gson().fromJson(response, Summoner.class);
 	}
 }

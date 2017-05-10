@@ -15,38 +15,10 @@ public class RiotApi
 		this.summonerApi = new SummonerApi();
 	}
 
-	public Map<String, Summoner> getSummonersByName(String... summonerName)
-	{
-		return summonerApi.getSummonersByName(queryManager, summonerName);
-	}
-
 	public Summoner getSummonerByName(String summonerName)
 	{
 		return summonerApi.getSummonerByName(queryManager, summonerName);
 	}
-
-/*	public Map<String, Summoner> getSummonersByName(String... summonerNames)
-	{
-		System.out.println("summonerNames.toString() = " + summonerNames.length);
-		for (int i = 0; i < summonerNames.length; i++)
-			summonerNames[i] = summonerNames[i].toLowerCase().replace(" ", "");
-
-		String queryString = "/api/lol/na/v1.4/summoner/by-name/" + summonerNames[0];
-		for (int i = 1; i < summonerNames.length; i++)
-			queryString += "," + summonerNames[i];
-
-		System.out.println("queryString = " + queryString);
-		String response = queryManager.query(queryString);
-		Type mapType = new TypeToken<HashMap<String,Summoner>>(){}.getType();
-
-		return new Gson().fromJson(response, mapType);
-	}
-
-	public Summoner getSummonerByName(String summonerName)
-	{
-		summonerName = summonerName.toLowerCase().replace(" ", "");
-		return getSummonersByName(summonerName).get(summonerName);
-	}*/
 
 /*	public MatchList getMatchListBySummonerId(Integer summonerId, int[] championIds, String[] rankedQueues, String[] seasons)
 	{
