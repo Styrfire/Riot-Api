@@ -51,9 +51,7 @@ public class QueryManager
 				response += line;
 			}
 			bufferedReader.close();
-//			response = connection.getResponseMessage();
 			System.out.println("ResponseCode = " + connection.getResponseCode());
-//			System.out.println("Response = " + response);
 
 			return response;
 		}

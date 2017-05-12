@@ -1,7 +1,7 @@
 package com.riot;
 
 import com.riot.api.RiotApi;
-import com.riot.dto.Summoner;
+import com.riot.dto.Summoner.Summoner;
 
 public class TestApi
 {

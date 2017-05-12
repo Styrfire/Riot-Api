@@ -1,4 +1,4 @@
-package com.riot.dto
+package com.riot.dto.Summoner
 
 class Summoner
 {

@@ -1,17 +1,25 @@
 package com.riot.api;
 
-import com.riot.dto.Summoner;
+import com.riot.dto.ChampionMastery.ChampionMastery;
+import com.riot.dto.Match.MatchList;
+import com.riot.dto.Summoner.Summoner;
 
-import java.util.Map;
+import java.util.List;
 
 public class RiotApi
 {
 	private QueryManager queryManager;
+
+	private ChampionMasteryApi championMasteryApi;
+	private MatchApi matchApi;
 	private SummonerApi summonerApi;
 
 	public RiotApi()
 	{
 		this.queryManager = new QueryManager();
+
+		this.championMasteryApi = new ChampionMasteryApi();
+		this.matchApi = new MatchApi();
 		this.summonerApi = new SummonerApi();
 	}
 
@@ -20,29 +28,18 @@ public class RiotApi
 		return summonerApi.getSummonerByName(queryManager, summonerName);
 	}
 
-/*	public MatchList getMatchListBySummonerId(Integer summonerId, int[] championIds, String[] rankedQueues, String[] seasons)
+	MatchList getMatchListByAccountId(Integer accountId)
 	{
-		String queryString = "" + summonerId;
-		if (championIds != null)
-			for (int i = 1; i < championIds.length; i++)
-				queryString += "";
+		return matchApi.getMatchListByAccountId(queryManager, accountId);
+	}
 
-		if (rankedQueues != null)
-		{
-			queryString += "?rankedQueues=" + rankedQueues[0];
-			for (int i = 1; i < rankedQueues.length; i++)
-				queryString += "," + rankedQueues[i];
-		}
+	public List<ChampionMastery> getChampionMasteries(long summonerId)
+	{
+		return championMasteryApi.getChampionMasteries(queryManager, summonerId);
+	}
 
-		if (seasons != null)
-		{
-			queryString += "";
-			for (int i = 1; i < seasons.length; i++)
-				queryString += "";
-		}
-
-		String response = queryManager.query(queryString);
-
-		return new Gson().fromJson(response, MatchList.class);
+/*	public Match getMatchlistBySummonerId(Integer summonerId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+	{
+		return matchApi.getMatchListBySummonerId(queryManager, summonerId, championIds, rankedQueues, seasons, beginIndex, endIndex);
 	}*/
 }

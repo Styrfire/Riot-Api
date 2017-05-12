@@ -1,12 +1,7 @@
 package com.riot.api;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.riot.dto.Summoner;
-
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
+import com.riot.dto.Summoner.Summoner;
 
 public class SummonerApi
 {

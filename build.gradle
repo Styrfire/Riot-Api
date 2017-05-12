@@ -21,4 +21,6 @@ dependencies
 	compile 'com.google.code.gson:gson:2.8.0'
 	compile 'javax.inject:javax.inject:1'
 	compile "org.codehaus.groovy:groovy-all:2.4.5"
+
+	testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }

@@ -1,9 +1,9 @@
-package com.riot.dto
+package com.riot.dto.Match
 
 class MatchList
 {
-	int endIndex
 	List<MatchReference> matches
-	int startIntex
 	int totalGames
+	int startIndex
+	int endIndex
 }
