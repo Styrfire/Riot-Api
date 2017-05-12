@@ -1,7 +1,9 @@
 package com.riot.api;
 
 import com.riot.dto.ChampionMastery.ChampionMastery;
+import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
+import com.riot.dto.Match.MatchTimeline;
 import com.riot.dto.Summoner.Summoner;
 
 import java.util.List;
@@ -28,14 +30,24 @@ public class RiotApi
 		return summonerApi.getSummonerByName(queryManager, summonerName);
 	}
 
-	MatchList getMatchListByAccountId(Integer accountId)
+	Match getMatchByMatchId(Long matchId)
+	{
+		return matchApi.getMatchByMatchId(queryManager, matchId);
+	}
+
+	MatchTimeline getMatchTimelineByMatchId(Long matchId)
+	{
+		return matchApi.getMatchTimelineByMatchId(queryManager, matchId);
+	}
+
+	MatchList getMatchListByAccountId(Long accountId)
 	{
 		return matchApi.getMatchListByAccountId(queryManager, accountId);
 	}
 
-	public List<ChampionMastery> getChampionMasteries(long summonerId)
+	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId)
 	{
-		return championMasteryApi.getChampionMasteries(queryManager, summonerId);
+		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
 /*	public Match getMatchlistBySummonerId(Integer summonerId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)

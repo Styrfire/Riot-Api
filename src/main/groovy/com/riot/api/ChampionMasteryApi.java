@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ChampionMasteryApi
 {
-	List<ChampionMastery> getChampionMasteries(QueryManager queryManager, long summonerId)
+	List<ChampionMastery> getChampionMasteriesBySummonerId(QueryManager queryManager, long summonerId)
 	{
 		System.out.println("summonerId = " + String.valueOf(summonerId));
 

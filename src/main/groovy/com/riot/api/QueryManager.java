@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-public class QueryManager
+class QueryManager
 {
 	private static final double DEFAULT_SHORT_RATE_LIMIT = 10/10.0;
 	private static final double DEFAULT_LONG_RATE_LIMIT = 600/500.0;
@@ -15,13 +15,13 @@ public class QueryManager
 	private final RateLimiter shortRateLimiter;
 	private final RateLimiter longRateLimiter;
 
-	public QueryManager()
+	QueryManager()
 	{
 		longRateLimiter = RateLimiter.create(DEFAULT_LONG_RATE_LIMIT);
 		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
 	}
 
-	public String query(String queryUrl)
+	String query(String queryUrl)
 	{
 		try
 		{
@@ -45,15 +45,16 @@ public class QueryManager
 
 			// Get the response
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line, response = "";
+			String line;
+			StringBuilder response = new StringBuilder();
 			while ((line = bufferedReader.readLine()) != null)
 			{
-				response += line;
+				response.append(line);
 			}
 			bufferedReader.close();
 			System.out.println("ResponseCode = " + connection.getResponseCode());
 
-			return response;
+			return response.toString();
 		}
 		catch (Exception e)
 		{

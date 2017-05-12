@@ -1,18 +1,39 @@
 package com.riot.api
 
-import spock.lang.*
+import com.riot.dto.Match.Match
+import com.riot.dto.Match.MatchList
+import com.riot.dto.Match.MatchTimeline
+import spock.lang.Specification
 
 class MatchApiTest extends Specification
 {
-/*	def "test"()
+	def "test getMatchByMatchId"()
 	{
 		given:
 			RiotApi api = new RiotApi()
-			Summoner me = api.getSummonerByName("Zann Starfire")
 		when:
-			Match matchList = api.getMatchlistBySummonerId((Integer) me.getId(), null, null, null, null, null)
+			Match match = api.getMatchByMatchId(2448574892)
 		then:
-			System.out.println("First match id: " + matchList.matches.get(0))
 			true
-	}*/
+	}
+
+	def "test getMatchTimelineByMatchId"()
+	{
+		given:
+			RiotApi api = new RiotApi()
+		when:
+			MatchTimeline matchTimeline = api.getMatchTimelineByMatchId(2448574892)
+		then:
+			true
+	}
+
+	def "test getMatchListByAccountId"()
+	{
+		given:
+			RiotApi api = new RiotApi()
+		when:
+			MatchList matchList = api.getMatchListByAccountId(206871870)
+		then:
+			true
+	}
 }

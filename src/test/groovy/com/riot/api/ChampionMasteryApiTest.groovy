@@ -6,13 +6,13 @@ import spock.lang.Specification
 
 class ChampionMasteryApiTest extends Specification
 {
-	def "test getChampionMasteries"()
+	def "test getChampionMasteriesBySummonerId"()
 	{
 		given:
 			RiotApi api = new RiotApi()
 			Summoner summoner = api.getSummonerByName("Zann Starfire")
 		when:
-			List<ChampionMastery> championMastery = api.getChampionMasteries(summoner.getId())
+			List<ChampionMastery> championMastery = api.getChampionMasteriesBySummonerId(summoner.getId())
 		then:
 			true
 	}
