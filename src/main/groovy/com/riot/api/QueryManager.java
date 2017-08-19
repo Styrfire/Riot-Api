@@ -9,14 +9,18 @@ import java.net.URL;
 
 class QueryManager
 {
-	private static final double DEFAULT_SHORT_RATE_LIMIT = 10/10.0;
-	private static final double DEFAULT_LONG_RATE_LIMIT = 600/500.0;
+	private static final double DEFAULT_SHORT_RATE_LIMIT = 20/1.0;
+	private static final double DEFAULT_LONG_RATE_LIMIT = 100/120.0;
+
+	private final String apiKey;
 
 	private final RateLimiter shortRateLimiter;
 	private final RateLimiter longRateLimiter;
 
-	QueryManager()
+	QueryManager(String apiKey)
 	{
+		this.apiKey = apiKey;
+
 		longRateLimiter = RateLimiter.create(DEFAULT_LONG_RATE_LIMIT);
 		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
 	}
@@ -34,7 +38,7 @@ class QueryManager
 			shortRateLimiter.acquire();
 			longRateLimiter.acquire();
 
-			URL url = new URL("https://na1.api.riotgames.com" + queryUrl + "?api_key=e76cf560-ec14-4aae-946c-35967340214d");
+			URL url = new URL("https://na1.api.riotgames.com" + queryUrl + "?api_key=" + apiKey);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setDoOutput(true);

@@ -12,6 +12,7 @@ class SummonerApiTest extends Specification
 		when:
 			Summoner summoner = api.getSummonerByName("Zann Starfire")
 		then:
-			true
+			summoner != null
+			summoner.getId() == 44199889
 	}
 }

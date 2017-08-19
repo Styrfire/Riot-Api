@@ -14,7 +14,8 @@ class MatchApiTest extends Specification
 		when:
 			Match match = api.getMatchByMatchId(2448574892)
 		then:
-			true
+			match != null
+			match.getGameId() == 2448574892
 	}
 
 	def "test getMatchTimelineByMatchId"()
@@ -24,7 +25,8 @@ class MatchApiTest extends Specification
 		when:
 			MatchTimeline matchTimeline = api.getMatchTimelineByMatchId(2448574892)
 		then:
-			true
+			matchTimeline != null
+			matchTimeline.getFrameInterval() == 60000
 	}
 
 	def "test getMatchListByAccountId"()
@@ -34,6 +36,7 @@ class MatchApiTest extends Specification
 		when:
 			MatchList matchList = api.getMatchListByAccountId(206871870)
 		then:
-			true
+			matchList != null
+			matchList.getMatches() != null
 	}
 }
