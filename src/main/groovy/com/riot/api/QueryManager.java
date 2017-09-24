@@ -1,6 +1,7 @@
 package com.riot.api;
 
 import com.google.common.util.concurrent.RateLimiter;
+import com.riot.exception.RiotExceptionCreator;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -25,7 +26,7 @@ class QueryManager
 		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
 	}
 
-	String query(String queryUrl)
+	String query(String queryUrl) throws Exception
 	{
 		try
 		{
@@ -38,14 +39,16 @@ class QueryManager
 			shortRateLimiter.acquire();
 			longRateLimiter.acquire();
 
-			URL url = new URL("https://na1.api.riotgames.com" + queryUrl + "?api_key=" + apiKey);
+			String urlString = "https://na1.api.riotgames.com" + queryUrl + "?api_key=" + apiKey;
+			System.out.println("urlString = " + urlString);
+			URL url = new URL(urlString);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 			connection.setRequestMethod("GET");
 			connection.setDoOutput(true);
 
 			// handle exceptions
 			if (connection.getResponseCode() >= 300)
-				throw new Exception();
+				RiotExceptionCreator.throwException(connection.getResponseCode());
 
 			// Get the response
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));

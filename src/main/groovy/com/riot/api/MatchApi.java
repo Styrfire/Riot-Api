@@ -10,7 +10,16 @@ class MatchApi
 	Match getMatchByMatchId(QueryManager queryManager, Long matchId)
 	{
 		String queryString = "/lol/match/v3/matches/" + matchId.toString();
-		String response = queryManager.query(queryString);
+
+		String response = null;
+		try
+		{
+			response = queryManager.query(queryString);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		return new Gson().fromJson(response, Match.class);
 	}
@@ -18,7 +27,17 @@ class MatchApi
 	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId)
 	{
 		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString();
-		String response = queryManager.query(queryString);
+
+		String response = null;
+		try
+		{
+			response = queryManager.query(queryString);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Oops... Something went wrong...");
+		}
 
 		return new Gson().fromJson(response, MatchTimeline.class);
 	}
@@ -26,7 +45,17 @@ class MatchApi
 	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId)
 	{
 		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString();
-		String response = queryManager.query(queryString);
+
+		String response = null;
+		try
+		{
+			response = queryManager.query(queryString);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			System.out.println("Oops... Something went wrong...");
+		}
 
 		return new Gson().fromJson(response, MatchList.class);
 	}

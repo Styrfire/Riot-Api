@@ -4,11 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riot.dto.ChampionMastery.ChampionMastery;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChampionMasteryApi
+class ChampionMasteryApi
 {
 	List<ChampionMastery> getChampionMasteriesBySummonerId(QueryManager queryManager, long summonerId)
 	{
@@ -17,7 +16,16 @@ public class ChampionMasteryApi
 		String queryString = "/lol/champion-mastery/v3/champion-masteries/by-summoner/" + String.valueOf(summonerId);
 
 		System.out.println("queryString = " + queryString);
-		String response = queryManager.query(queryString);
+
+		String response = null;
+		try
+		{
+			response = queryManager.query(queryString);
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
 
 		return new Gson().fromJson(response, new TypeToken<ArrayList<ChampionMastery>>(){}.getType());
 	}

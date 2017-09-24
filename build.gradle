@@ -5,6 +5,9 @@ jar
 {
 	baseName = 'riot-api'
 	version =  '1.0.0'
+	manifest {
+		attributes 'application-version': "1.0.0"
+	}
 }
 
 repositories

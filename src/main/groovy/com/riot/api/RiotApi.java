@@ -15,12 +15,6 @@ public class RiotApi
 	private ChampionMasteryApi championMasteryApi;
 	private MatchApi matchApi;
 	private SummonerApi summonerApi;
-	private static String apiKey = "RGAPI-a195fc65-a616-464c-946a-1faa4429295f";
-
-	public RiotApi()
-	{
-		this(apiKey);
-	}
 
 	public RiotApi(String apiKey)
 	{
