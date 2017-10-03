@@ -5,6 +5,7 @@ import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
 import com.riot.dto.Summoner.Summoner;
+import com.riot.exception.RiotApiException;
 
 import java.util.List;
 
@@ -25,33 +26,33 @@ public class RiotApi
 		this.summonerApi = new SummonerApi();
 	}
 
-	public Summoner getSummonerByName(String summonerName)
+	public Summoner getSummonerByName(String summonerName) throws RiotApiException
 	{
 		return summonerApi.getSummonerByName(queryManager, summonerName);
 	}
 
-	Match getMatchByMatchId(Long matchId)
+	public Match getMatchByMatchId(Long matchId) throws RiotApiException
 	{
 		return matchApi.getMatchByMatchId(queryManager, matchId);
 	}
 
-	MatchTimeline getMatchTimelineByMatchId(Long matchId)
+	public MatchTimeline getMatchTimelineByMatchId(Long matchId) throws RiotApiException
 	{
 		return matchApi.getMatchTimelineByMatchId(queryManager, matchId);
 	}
 
-	MatchList getMatchListByAccountId(Long accountId)
+	public MatchList getMatchListByAccountId(Long accountId) throws RiotApiException
 	{
 		return matchApi.getMatchListByAccountId(queryManager, accountId);
 	}
 
-	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId)
+	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId) throws RiotApiException
 	{
 		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
-/*	public Match getMatchlistBySummonerId(Integer summonerId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
 	{
-		return matchApi.getMatchListBySummonerId(queryManager, summonerId, championIds, rankedQueues, seasons, beginIndex, endIndex);
+		return matchApi.getMatchListByAccountId(queryManager, accountId, championIds, rankedQueues, seasons, beginIndex, endIndex);
 	}*/
 }

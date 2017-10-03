@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class GatewayTimeoutException extends Exception
+class GatewayTimeoutException extends RiotApiException
 {
 	GatewayTimeoutException()
 	{

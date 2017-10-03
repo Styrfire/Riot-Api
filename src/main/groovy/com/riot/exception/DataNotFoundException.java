@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class DataNotFoundException extends Exception
+class DataNotFoundException extends RiotApiException
 {
 	DataNotFoundException()
 	{

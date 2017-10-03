@@ -1,12 +1,17 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 
+configure()
+{
+	version = "${version.replace("SNAPSHOT", "${date}")}"
+}
+
 jar
 {
 	baseName = 'riot-api'
 	version =  '1.0.0'
 	manifest {
-		attributes 'application-version': "1.0.0"
+		attributes 'application-version': version
 	}
 }
 
@@ -18,7 +23,7 @@ repositories
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-dependencies 
+dependencies
 {
 	compile 'com.google.guava:guava:17.0'
 	compile 'com.google.code.gson:gson:2.8.0'
@@ -26,4 +31,9 @@ dependencies
 	compile "org.codehaus.groovy:groovy-all:2.4.5"
 
 	testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
+}
+
+task wrapper(type: Wrapper) {
+	description = "Generates gradlew[.bat] scripts"
+	gradleVersion = "2.14"
 }

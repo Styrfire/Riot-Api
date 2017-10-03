@@ -1,6 +1,7 @@
 package com.riot.api;
 
 import com.google.common.util.concurrent.RateLimiter;
+import com.riot.exception.RiotApiException;
 import com.riot.exception.RiotExceptionCreator;
 
 import java.io.BufferedReader;
@@ -26,7 +27,7 @@ class QueryManager
 		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
 	}
 
-	String query(String queryUrl) throws Exception
+	String query(String queryUrl) throws RiotApiException
 	{
 		try
 		{
@@ -63,10 +64,14 @@ class QueryManager
 
 			return response.toString();
 		}
+		catch (RiotApiException e)
+		{
+			throw e;
+		}
 		catch (Exception e)
 		{
-			e.getMessage();
-			return null;
+			e.printStackTrace();
+			throw new RiotApiException("Oops... Something went wrong...");
 		}
 	}
 }

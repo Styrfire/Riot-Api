@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class BadGatewayException extends Exception
+class BadGatewayException extends RiotApiException
 {
 	BadGatewayException()
 	{

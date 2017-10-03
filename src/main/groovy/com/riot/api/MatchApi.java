@@ -4,109 +4,93 @@ import com.google.gson.Gson;
 import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
+import com.riot.exception.RiotApiException;
 
 class MatchApi
 {
-	Match getMatchByMatchId(QueryManager queryManager, Long matchId)
+	Match getMatchByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
 		String queryString = "/lol/match/v3/matches/" + matchId.toString();
 
-		String response = null;
-		try
-		{
-			response = queryManager.query(queryString);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+		String response = queryManager.query(queryString);
 
 		return new Gson().fromJson(response, Match.class);
 	}
 
-	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId)
+	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
 		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString();
 
-		String response = null;
-		try
-		{
-			response = queryManager.query(queryString);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("Oops... Something went wrong...");
-		}
+		String response = queryManager.query(queryString);
 
 		return new Gson().fromJson(response, MatchTimeline.class);
 	}
 
-	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId)
+	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId) throws RiotApiException
 	{
 		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString();
 
-		String response = null;
-		try
-		{
-			response = queryManager.query(queryString);
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			System.out.println("Oops... Something went wrong...");
-		}
+		String response = queryManager.query(queryString);
 
 		return new Gson().fromJson(response, MatchList.class);
 	}
 
-/*	MatchList getMatchListByAccountId(QueryManager queryManager, Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+/*	MatchList getMatchListByAccountId(QueryManager queryManager, Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex) throws Exception
 	{
-		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?";
+		StringBuilder queryString = new StringBuilder("/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?");
 		if (championIds != null)
 		{
-			queryString += "championIds=" + championIds[0];
+			queryString.append("championIds=").append(championIds[0]);
 			for (int i = 1; i < championIds.length; i++)
-				queryString += "," + championIds[i];
+				queryString.append(",").append(championIds[i]);
 		}
 
 		if (rankedQueues != null)
 		{
 			if (championIds != null)
-				queryString += "&";
+				queryString.append("&");
 
-			queryString += "rankedQueues=" + rankedQueues[0];
+			queryString.append("rankedQueues=").append(rankedQueues[0]);
 			for (int i = 1; i < rankedQueues.length; i++)
-				queryString += "," + rankedQueues[i];
+				queryString.append(",").append(rankedQueues[i]);
 		}
 
 		if (seasons != null)
 		{
 			if (championIds != null || rankedQueues != null)
-				queryString += "&";
+				queryString.append("&");
 
-			queryString += "seasons=" + seasons[0];
+			queryString.append("seasons=").append(seasons[0]);
 			for (int i = 1; i < seasons.length; i++)
-				queryString += "," + seasons[i];
+				queryString.append(",").append(seasons[i]);
 		}
 
 		if (beginIndex != null)
 		{
 			if (championIds != null || rankedQueues != null || seasons != null)
-				queryString += "&";
+				queryString.append("&");
 
-			queryString += beginIndex;
+			queryString.append(beginIndex);
 		}
 
 		if (beginIndex != null)
 		{
 			if (championIds != null || rankedQueues != null || seasons != null || beginIndex != null)
-				queryString += "&";
+				queryString.append("&");
 
-			queryString += endIndex;
+			queryString.append(endIndex);
 		}
 
-		String response = queryManager.query(queryString);
+		String response = null;
+		try
+		{
+			response = queryManager.query(queryString.toString());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+			throw e;
+		}
 
 		return new Gson().fromJson(response, MatchList.class);
 	}*/

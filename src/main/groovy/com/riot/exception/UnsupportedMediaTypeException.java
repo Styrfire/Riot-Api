@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class UnsupportedMediaTypeException extends Exception
+class UnsupportedMediaTypeException extends RiotApiException
 {
 	UnsupportedMediaTypeException()
 	{

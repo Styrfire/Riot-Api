@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class UnauthorizedException extends Exception
+class UnauthorizedException extends RiotApiException
 {
 	UnauthorizedException()
 	{

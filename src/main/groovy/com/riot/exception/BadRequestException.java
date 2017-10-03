@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class BadRequestException extends Exception
+class BadRequestException extends RiotApiException
 {
 	BadRequestException()
 	{

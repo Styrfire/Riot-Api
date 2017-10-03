@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class RateLimitExceededException extends Exception
+class RateLimitExceededException extends RiotApiException
 {
 	RateLimitExceededException()
 	{

@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class InternalServerErrorException extends Exception
+class InternalServerErrorException extends RiotApiException
 {
 	InternalServerErrorException()
 	{

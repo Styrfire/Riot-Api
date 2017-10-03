@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class MethodNotAllowedException extends Exception
+class MethodNotAllowedException extends RiotApiException
 {
 	MethodNotAllowedException()
 	{

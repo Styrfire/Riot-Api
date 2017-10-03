@@ -1,6 +1,6 @@
 package com.riot.exception;
 
-class ServiceUnavailableException extends Exception
+class ServiceUnavailableException extends RiotApiException
 {
 	ServiceUnavailableException()
 	{

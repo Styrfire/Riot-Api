@@ -2,7 +2,7 @@ package com.riot.exception;
 
 public class RiotExceptionCreator
 {
-	public static void throwException(int responseCode) throws Exception
+	public static void throwException(int responseCode) throws RiotApiException
 // 			throws BadGatewayException, BadRequestException,
 //			DataNotFoundException, ForbiddenException, GatewayTimeoutException, InternalServerErrorException, MethodNotAllowedException,
 //			RateLimitExceededException, ServiceUnavailableException, UnauthorizedException, UnsupportedMediaTypeException
@@ -32,7 +32,7 @@ public class RiotExceptionCreator
 			case 504:
 				throw new GatewayTimeoutException();
 			default:
-				throw new Exception("Oops... Something went wrong...");
+				throw new RiotApiException("Oops... Something went wrong...");
 		}
 	}
 }
