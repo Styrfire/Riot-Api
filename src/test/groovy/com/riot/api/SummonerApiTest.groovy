@@ -2,8 +2,10 @@ package com.riot.api
 
 import com.riot.dto.Summoner.Summoner
 import com.riot.staticInfo.RiotEnum
+import org.junit.Ignore
 import spock.lang.Specification
 
+@Ignore
 class SummonerApiTest extends Specification
 {
 	def "test getSummonerByName"()

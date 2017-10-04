@@ -4,8 +4,10 @@ import com.riot.dto.Match.Match
 import com.riot.dto.Match.MatchList
 import com.riot.dto.Match.MatchTimeline
 import com.riot.staticInfo.RiotEnum
+import org.junit.Ignore
 import spock.lang.Specification
 
+@Ignore
 class MatchApiTest extends Specification
 {
 	def "test getMatchByMatchId"()

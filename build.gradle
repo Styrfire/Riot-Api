@@ -1,15 +1,15 @@
 apply plugin: 'groovy'
 apply plugin: 'java'
 
-configure()
-{
-	version = "${version.replace("SNAPSHOT", "${date}")}"
+ext {
+	date = new Date().format("yyMMdd.HHmm")
 }
+
+version = "${version.replace("SNAPSHOT", "${date}")}"
 
 jar
 {
 	baseName = 'riot-api'
-	version =  '1.0.0'
 	manifest {
 		attributes 'application-version': version
 	}

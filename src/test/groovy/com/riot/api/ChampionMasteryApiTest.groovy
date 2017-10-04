@@ -2,8 +2,10 @@ package com.riot.api
 
 import com.riot.dto.ChampionMastery.ChampionMastery
 import com.riot.staticInfo.RiotEnum
+import org.junit.Ignore
 import spock.lang.Specification
 
+@Ignore
 class ChampionMasteryApiTest extends Specification
 {
 	def "test getChampionMasteriesBySummonerId"()
