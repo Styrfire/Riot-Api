@@ -13,11 +13,13 @@ class QueryManager
 {
 	private static final double DEFAULT_SHORT_RATE_LIMIT = 20/1.0;
 	private static final double DEFAULT_LONG_RATE_LIMIT = 100/120.0;
+	private static final double STATIC_DATA_RATE_LIMIT = 10/3600.0;
 
 	private final String apiKey;
 
 	private final RateLimiter shortRateLimiter;
 	private final RateLimiter longRateLimiter;
+	private final RateLimiter staticDataRateLimiter;
 
 	QueryManager(String apiKey)
 	{
@@ -25,20 +27,31 @@ class QueryManager
 
 		longRateLimiter = RateLimiter.create(DEFAULT_LONG_RATE_LIMIT);
 		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
+		staticDataRateLimiter = RateLimiter.create(STATIC_DATA_RATE_LIMIT);
 	}
 
-	String query(String queryUrl) throws RiotApiException
+	String query(String queryUrl, boolean isStaticData) throws RiotApiException
 	{
 		try
 		{
 			//respect rate limit
-			if (!shortRateLimiter.tryAcquire())
-				System.out.println("ShortRateLimiterFailed");
-			if (!longRateLimiter.tryAcquire())
-				System.out.println("LongRateLimiterFailed");
+			if (isStaticData)
+			{
+				if (!staticDataRateLimiter.tryAcquire())
+					System.out.println("StaticDataRateLimiterFailed");
 
-			shortRateLimiter.acquire();
-			longRateLimiter.acquire();
+				staticDataRateLimiter.acquire();
+			}
+			else
+			{
+				if (!shortRateLimiter.tryAcquire())
+					System.out.println("ShortRateLimiterFailed");
+				if (!longRateLimiter.tryAcquire())
+					System.out.println("LongRateLimiterFailed");
+
+				shortRateLimiter.acquire();
+				longRateLimiter.acquire();
+			}
 
 			String urlString = "https://na1.api.riotgames.com" + queryUrl + "?api_key=" + apiKey;
 			System.out.println("urlString = " + urlString);

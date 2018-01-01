@@ -12,7 +12,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/matches/" + matchId.toString();
 
-		String response = queryManager.query(queryString);
+		String response = queryManager.query(queryString, false);
 
 		return new Gson().fromJson(response, Match.class);
 	}
@@ -21,7 +21,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString();
 
-		String response = queryManager.query(queryString);
+		String response = queryManager.query(queryString, false);
 
 		return new Gson().fromJson(response, MatchTimeline.class);
 	}
@@ -30,7 +30,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString();
 
-		String response = queryManager.query(queryString);
+		String response = queryManager.query(queryString, false);
 
 		return new Gson().fromJson(response, MatchList.class);
 	}

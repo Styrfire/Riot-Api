@@ -14,7 +14,7 @@ class SummonerApi
 		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName;
 		System.out.println("queryString = " + queryString);
 
-		String response = queryManager.query(queryString);
+		String response = queryManager.query(queryString, false);
 
 		return new Gson().fromJson(response, Summoner.class);
 	}

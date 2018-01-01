@@ -4,6 +4,7 @@ import com.riot.dto.ChampionMastery.ChampionMastery;
 import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
+import com.riot.dto.StaticData.Champion;
 import com.riot.dto.Summoner.Summoner;
 import com.riot.exception.RiotApiException;
 
@@ -15,6 +16,7 @@ public class RiotApi
 
 	private ChampionMasteryApi championMasteryApi;
 	private MatchApi matchApi;
+	private StaticDataApi staticDataApi;
 	private SummonerApi summonerApi;
 
 	public RiotApi(String apiKey)
@@ -23,6 +25,7 @@ public class RiotApi
 
 		this.championMasteryApi = new ChampionMasteryApi();
 		this.matchApi = new MatchApi();
+		this.staticDataApi = new StaticDataApi();
 		this.summonerApi = new SummonerApi();
 	}
 
@@ -51,7 +54,12 @@ public class RiotApi
 		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
-/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+	public Champion getStaticChampionInfoById(int championId) throws RiotApiException
+	{
+		return staticDataApi.getStaticChampionInfo(queryManager, championId);
+	}
+
+	/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
 	{
 		return matchApi.getMatchListByAccountId(queryManager, accountId, championIds, rankedQueues, seasons, beginIndex, endIndex);
 	}*/
