@@ -1,0 +1,12 @@
+package com.riot.enums;
+
+public enum METHOD
+{
+	API_SHORT,
+	API_LONG,
+	GENERIC,
+	STATIC,
+	MATCH_BY_MATCH_ID,
+	MATCH_TIMELINE_BY_MATCH_ID,
+	MATCH_LIST_BY_ACCOUNT_ID
+}

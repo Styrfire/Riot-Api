@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
+import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 
 class MatchApi
@@ -12,7 +13,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/matches/" + matchId.toString();
 
-		String response = queryManager.query(queryString, false);
+		String response = queryManager.query(queryString, METHOD.MATCH_BY_MATCH_ID);
 
 		return new Gson().fromJson(response, Match.class);
 	}
@@ -21,7 +22,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString();
 
-		String response = queryManager.query(queryString, false);
+		String response = queryManager.query(queryString, METHOD.MATCH_TIMELINE_BY_MATCH_ID);
 
 		return new Gson().fromJson(response, MatchTimeline.class);
 	}
@@ -30,7 +31,7 @@ class MatchApi
 	{
 		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString();
 
-		String response = queryManager.query(queryString, false);
+		String response = queryManager.query(queryString, METHOD.MATCH_LIST_BY_ACCOUNT_ID);
 
 		return new Gson().fromJson(response, MatchList.class);
 	}

@@ -2,6 +2,7 @@ package com.riot.api;
 
 import com.google.gson.Gson;
 import com.riot.dto.StaticData.Champion;
+import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 
 class StaticDataApi
@@ -12,7 +13,7 @@ class StaticDataApi
 		String queryString = "/lol/static-data/v3/champions/" + champId;
 		System.out.println("queryString = " + queryString);
 
-		String response = queryManager.query(queryString, true);
+		String response = queryManager.query(queryString, METHOD.STATIC);
 
 		return new Gson().fromJson(response, Champion.class);
 	}

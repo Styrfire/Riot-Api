@@ -3,6 +3,7 @@ package com.riot.api;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.riot.dto.ChampionMastery.ChampionMastery;
+import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ class ChampionMasteryApi
 		String queryString = "/lol/champion-mastery/v3/champion-masteries/by-summoner/" + String.valueOf(summonerId);
 		System.out.println("queryString = " + queryString);
 
-		String response = queryManager.query(queryString, false);
+		String response = queryManager.query(queryString, METHOD.GENERIC);
 
 		return new Gson().fromJson(response, new TypeToken<ArrayList<ChampionMastery>>(){}.getType());
 	}
