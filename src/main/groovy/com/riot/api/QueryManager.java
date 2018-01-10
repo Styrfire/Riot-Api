@@ -129,7 +129,7 @@ class QueryManager
 //			longRateLimiter.acquire();
 
 			// make the api call
-			String urlString = "https://na1.api.riotgames.com" + queryUrl + "?api_key=" + apiKey;
+			String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
 			System.out.println("urlString = " + urlString);
 			URL url = new URL(urlString);
 			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -171,7 +171,8 @@ class QueryManager
 				rateLimiterList.get(method).setNumOfCalls(rateLimiterList.get(method).getNumOfCalls() + 1);
 			}
 
-			// if api short wasn't on rateLimiterList, add it
+			// static methods don't count against the application api and won't have the headers
+			// if api short wasn't on rateLimiterList and the method wasn't static, add it
 			if (!appShortInList && (method != METHOD.STATIC))
 			{
 				Double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
@@ -189,13 +190,13 @@ class QueryManager
 
 				rateLimiterList.put(METHOD.API_SHORT, rateLimiterListData);
 			}
-			// if api short was on list, update the number of calls it's made within the time window
-			else
+			// if api short was on list and the method wasn't static, update the number of calls it's made within the time window
+			else if (method != METHOD.STATIC)
 			{
 				rateLimiterList.get(METHOD.API_SHORT).setNumOfCalls(rateLimiterList.get(METHOD.API_SHORT).getNumOfCalls() + 1);
 			}
 
-			// if api long wasn't on rateLimiterList, add it
+			// if api long wasn't on rateLimiterList and the method wasn't static, add it
 			if (!appLongInList && (method != METHOD.STATIC))
 			{
 				Double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
@@ -213,8 +214,8 @@ class QueryManager
 
 				rateLimiterList.put(METHOD.API_LONG, rateLimiterListData);
 			}
-			// if api long was on list, update the number of calls it's made within the time window
-			else
+			// if api long was on list and the method wasn't static, update the number of calls it's made within the time window
+			else if (method != METHOD.STATIC)
 			{
 				rateLimiterList.get(METHOD.API_LONG).setNumOfCalls(rateLimiterList.get(METHOD.API_LONG).getNumOfCalls() + 1);
 			}

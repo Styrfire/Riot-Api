@@ -14,7 +14,7 @@ class ChampionMasteryApi
 	List<ChampionMastery> getChampionMasteriesBySummonerId(QueryManager queryManager, long summonerId) throws RiotApiException
 	{
 		System.out.println("summonerId = " + String.valueOf(summonerId));
-		String queryString = "/lol/champion-mastery/v3/champion-masteries/by-summoner/" + String.valueOf(summonerId);
+		String queryString = "/lol/champion-mastery/v3/champion-masteries/by-summoner/" + String.valueOf(summonerId) + "?";
 		System.out.println("queryString = " + queryString);
 
 		String response = queryManager.query(queryString, METHOD.GENERIC);

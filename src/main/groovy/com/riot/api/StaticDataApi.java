@@ -10,7 +10,7 @@ class StaticDataApi
 	Champion getStaticChampionInfo(QueryManager queryManager, Integer champId) throws RiotApiException
 	{
 		System.out.println("summonerName = " + champId);
-		String queryString = "/lol/static-data/v3/champions/" + champId;
+		String queryString = "/lol/static-data/v3/champions/" + champId + "?locale=en_US&";
 		System.out.println("queryString = " + queryString);
 
 		String response = queryManager.query(queryString, METHOD.STATIC);

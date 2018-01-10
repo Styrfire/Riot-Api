@@ -12,7 +12,7 @@ class SummonerApi
 		System.out.println("summonerName = " + summonerName);
 		summonerName = summonerName.replace(" ", "%20");
 
-		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName;
+		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName + "?";
 		System.out.println("queryString = " + queryString);
 
 		String response = queryManager.query(queryString, METHOD.GENERIC);

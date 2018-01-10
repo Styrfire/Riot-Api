@@ -11,7 +11,7 @@ class MatchApi
 {
 	Match getMatchByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
-		String queryString = "/lol/match/v3/matches/" + matchId.toString();
+		String queryString = "/lol/match/v3/matches/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_BY_MATCH_ID);
 
@@ -20,7 +20,7 @@ class MatchApi
 
 	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
-		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString();
+		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_TIMELINE_BY_MATCH_ID);
 
@@ -29,7 +29,7 @@ class MatchApi
 
 	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId) throws RiotApiException
 	{
-		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString();
+		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_LIST_BY_ACCOUNT_ID);
 
