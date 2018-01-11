@@ -3,6 +3,7 @@ apply plugin: 'java'
 
 ext {
 	date = new Date().format("yyMMdd.HHmm")
+	springBootVersion = "1.4.2.RELEASE"
 }
 
 versionNum = "${versionNum.replace("SNAPSHOT", "${date}")}"
@@ -29,6 +30,7 @@ dependencies
 	compile 'com.google.code.gson:gson:2.8.0'
 	compile 'javax.inject:javax.inject:1'
 	compile "org.codehaus.groovy:groovy-all:2.4.5"
+	compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 
 	testCompile 'org.spockframework:spock-core:0.7-groovy-2.0'
 }
