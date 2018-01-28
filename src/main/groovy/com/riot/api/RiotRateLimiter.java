@@ -3,6 +3,7 @@ package com.riot.api;
 import com.google.common.util.concurrent.RateLimiter;
 import com.riot.dto.RateLimiter.RateLimiterListData;
 import com.riot.enums.METHOD;
+import org.apache.log4j.Logger;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +12,8 @@ import java.util.Map;
 
 public class RiotRateLimiter
 {
+	private static Logger logger = Logger.getLogger(RiotRateLimiter.class);
+
 	private boolean methodInList;
 	private boolean appShortInList;
 	private boolean appLongInList;
@@ -127,7 +130,7 @@ public class RiotRateLimiter
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(0)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(1)));
 
-			System.out.println("methodTimeWindow = " + timeWindow +
+			logger.debug("methodTimeWindow = " + timeWindow +
 			"\nmethodNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
 			"\nmethodMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
 			"\nmethodTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
@@ -152,7 +155,7 @@ public class RiotRateLimiter
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(0)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(1)));
 
-			System.out.println("appShortTimeWindow = " + timeWindow +
+			logger.debug("appShortTimeWindow = " + timeWindow +
 			"\nappShortNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
 			"\nappShortMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
 			"\nappShortTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
@@ -176,7 +179,7 @@ public class RiotRateLimiter
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(2)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(3)));
 
-			System.out.println("appLongTimeWindow = " + timeWindow +
+			logger.debug("appLongTimeWindow = " + timeWindow +
 			"\nappLongNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
 			"\nappLongMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
 			"\nappLongTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());

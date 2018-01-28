@@ -6,11 +6,15 @@ import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
+import org.apache.log4j.Logger;
 
 class MatchApi
 {
+	private static Logger logger = Logger.getLogger(MatchApi.class);
+
 	Match getMatchByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
+		logger.debug("matchId = " + matchId);
 		String queryString = "/lol/match/v3/matches/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_BY_MATCH_ID);
@@ -20,6 +24,7 @@ class MatchApi
 
 	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
+		logger.debug("matchId = " + matchId);
 		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_TIMELINE_BY_MATCH_ID);
@@ -29,6 +34,7 @@ class MatchApi
 
 	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId) throws RiotApiException
 	{
+		logger.debug("accountId = " + accountId);
 		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_LIST_BY_ACCOUNT_ID);

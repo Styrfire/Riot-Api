@@ -3,6 +3,7 @@ package com.riot.api;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 import com.riot.exception.RiotExceptionCreator;
+import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
@@ -11,6 +12,8 @@ import java.util.Map;
 
 class QueryManager
 {
+	private static Logger logger = Logger.getLogger(QueryManager.class);
+
 	private final String apiKey;
 	private final RiotRateLimiter rateLimiter;
 	private final RestTemplate restTemplate;
@@ -24,14 +27,14 @@ class QueryManager
 
 	String query(String queryUrl, METHOD method) throws RiotApiException
 	{
- 		try
+		try
 		{
 			// check to make sure the method isn't exceeding it's rate limit
 			rateLimiter.preApiCallRateLimit(method);
 
 			// make the api call
 			String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
-			System.out.println("urlString = " + urlString);
+			logger.info("urlString = " + urlString);
 			ResponseEntity<String> responseEntity = restTemplate.getForEntity(urlString, String.class);
 
 			// handle exceptions
@@ -40,10 +43,10 @@ class QueryManager
 
 			// rate limit headers
 			Map<String, List<String>> headers = responseEntity.getHeaders();
-			System.out.println(headers.get("X-App-Rate-Limit"));
-			System.out.println(headers.get("X-App-Rate-Limit-Count"));
-			System.out.println(headers.get("X-Method-Rate-Limit"));
-			System.out.println(headers.get("X-Method-Rate-Limit-Count"));
+			logger.debug(headers.get("X-App-Rate-Limit"));
+			logger.debug(headers.get("X-App-Rate-Limit-Count"));
+			logger.debug(headers.get("X-Method-Rate-Limit"));
+			logger.debug(headers.get("X-Method-Rate-Limit-Count"));
 
 			// updated method rate limit objects
 			rateLimiter.postApiCallRateLimit(method, headers);
@@ -57,7 +60,7 @@ class QueryManager
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			logger.error(e);
 			throw new RiotApiException("Oops... Something went wrong...");
 		}
 	}
