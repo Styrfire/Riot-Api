@@ -16,7 +16,7 @@ class SummonerApi
 		summonerName = summonerName.replace(" ", "%20");
 		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName + "?";
 
-		String response = queryManager.query(queryString, METHOD.GENERIC);
+		String response = queryManager.query(queryString, METHOD.SUMMONER_BY_NAME);
 
 		return new Gson().fromJson(response, Summoner.class);
 	}

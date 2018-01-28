@@ -19,7 +19,7 @@ class ChampionMasteryApi
 		logger.debug("summonerId = " + summonerId);
 		String queryString = "/lol/champion-mastery/v3/champion-masteries/by-summoner/" + String.valueOf(summonerId) + "?";
 
-		String response = queryManager.query(queryString, METHOD.GENERIC);
+		String response = queryManager.query(queryString, METHOD.CHAMPION_MASTERIES_BY_SUMMONER_ID);
 
 		return new Gson().fromJson(response, new TypeToken<ArrayList<ChampionMastery>>(){}.getType());
 	}
