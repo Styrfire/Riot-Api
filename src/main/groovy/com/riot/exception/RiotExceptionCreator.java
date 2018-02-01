@@ -3,9 +3,6 @@ package com.riot.exception;
 public class RiotExceptionCreator
 {
 	public static void throwException(int responseCode) throws RiotApiException
-// 			throws BadGatewayException, BadRequestException,
-//			DataNotFoundException, ForbiddenException, GatewayTimeoutException, InternalServerErrorException, MethodNotAllowedException,
-//			RateLimitExceededException, ServiceUnavailableException, UnauthorizedException, UnsupportedMediaTypeException
 	{
 		switch (responseCode)
 		{

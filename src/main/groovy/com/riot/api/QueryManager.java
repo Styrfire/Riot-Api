@@ -5,6 +5,7 @@ import com.riot.exception.RiotApiException;
 import com.riot.exception.RiotExceptionCreator;
 import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -57,6 +58,12 @@ class QueryManager
 		catch (RiotApiException e)
 		{
 			throw e;
+		}
+		catch (HttpClientErrorException e)
+		{
+			logger.error(e);
+			RiotExceptionCreator.throwException(e.getStatusCode().value());
+			return null;
 		}
 		catch (Exception e)
 		{
