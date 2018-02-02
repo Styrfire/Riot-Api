@@ -4,10 +4,16 @@ import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 import com.riot.exception.RiotExceptionCreator;
 import org.apache.log4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +30,24 @@ class QueryManager
 		this.apiKey = apiKey;
 		this.rateLimiter = new RiotRateLimiter();
 		this.restTemplate = new RestTemplate();
+		// custom error handler for RestTemplate that throws exception when statusCode >= 300, not just 4xx and 5xx
+		restTemplate.setErrorHandler(new ResponseErrorHandler()
+		{
+			@Override
+			public boolean hasError(ClientHttpResponse response) throws IOException
+			{
+				return response.getStatusCode().value() >= 300;
+			}
+
+			@Override
+			public void handleError(ClientHttpResponse response) throws IOException
+			{
+				MediaType contentType = response.getHeaders().getContentType();
+				Charset charset = contentType != null ? contentType.getCharset() : null;
+				byte[] body = FileCopyUtils.copyToByteArray(response.getBody());
+				throw new HttpClientErrorException(response.getStatusCode(), response.getStatusText(), body, charset);
+			}
+		});
 	}
 
 	String query(String queryUrl, METHOD method) throws RiotApiException
@@ -38,10 +62,6 @@ class QueryManager
 			logger.info("urlString = " + urlString);
 			ResponseEntity<String> responseEntity = restTemplate.getForEntity(urlString, String.class);
 
-			// handle exceptions
-			if (responseEntity.getStatusCode().value() >= 300)
-				RiotExceptionCreator.throwException(responseEntity.getStatusCode().value());
-
 			// rate limit headers
 			Map<String, List<String>> headers = responseEntity.getHeaders();
 			logger.debug(headers.get("X-App-Rate-Limit"));
@@ -54,10 +74,6 @@ class QueryManager
 
 			// return the response
 			return responseEntity.getBody();
-		}
-		catch (RiotApiException e)
-		{
-			throw e;
 		}
 		catch (HttpClientErrorException e)
 		{
