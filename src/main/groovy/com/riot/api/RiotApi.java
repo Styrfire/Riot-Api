@@ -5,6 +5,7 @@ import com.riot.dto.Match.Match;
 import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
 import com.riot.dto.StaticData.Champion;
+import com.riot.dto.StaticData.ChampionList;
 import com.riot.dto.Summoner.Summoner;
 import com.riot.exception.RiotApiException;
 
@@ -54,9 +55,14 @@ public class RiotApi
 		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
+	public ChampionList getStaticChampionInfo() throws RiotApiException
+	{
+		return staticDataApi.getStaticChampionInfo(queryManager);
+	}
+
 	public Champion getStaticChampionInfoById(int championId) throws RiotApiException
 	{
-		return staticDataApi.getStaticChampionInfo(queryManager, championId);
+		return staticDataApi.getStaticChampionInfoById(queryManager, championId);
 	}
 
 	/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
