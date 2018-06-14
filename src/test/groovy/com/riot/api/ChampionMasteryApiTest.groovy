@@ -1,21 +1,37 @@
 package com.riot.api
 
 import com.riot.dto.ChampionMastery.ChampionMastery
-import com.riot.staticInfo.RiotEnum
-import org.junit.Ignore
+import com.riot.enums.METHOD
+import org.apache.log4j.Logger
 import spock.lang.Specification
 
-@Ignore
 class ChampionMasteryApiTest extends Specification
 {
+	private static Logger logger = Logger.getLogger(ChampionMasteryApiTest.class)
+
 	def "test getChampionMasteriesBySummonerId"()
 	{
 		given:
-			RiotApi api = new RiotApi(RiotEnum.apiKey)
+			QueryManager queryManagerMock = Mock(QueryManager)
+			ClassLoader classLoader = getClass().getClassLoader()
+			File file = new File(classLoader.getResource("apiResponses/championMastery/championMasteriesBySummonerId.json").getFile())
+			String responseJson = new String(file.readBytes())
+			logger.info("responseJson = " + responseJson)
+			queryManagerMock.query(_ as String, _ as METHOD) >> responseJson
 		when:
-			List<ChampionMastery> championMastery = api.getChampionMasteriesBySummonerId(44199889)
+			List<ChampionMastery> championMastery = new ChampionMasteryApi().getChampionMasteriesBySummonerId(queryManagerMock, 44199889)
 		then:
 			championMastery != null
+			championMastery.get(0).getChampionLevel() == 7
+			championMastery.get(0).getChestGranted() == true
+			championMastery.get(0).getChampionPoints() == 247627
+			championMastery.get(0).getChampionPointsSinceLastLevel() == 226027
+			championMastery.get(0).getPlayerId() == 44199889
+			championMastery.get(0).getChampionPointsUntilNextLevel() == 0
+			championMastery.get(0).getTokensEarned() == 0
 			championMastery.get(0).getChampionId() == 154
+			championMastery.get(0).getLastPlayTime() == 1520147481000
+			championMastery.get(1).getChampionId() == 56
+			championMastery.get(2).getChampionId() == 5
 	}
 }
