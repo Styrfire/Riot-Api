@@ -45,9 +45,9 @@ public class RiotApi
 		return matchApi.getMatchTimelineByMatchId(queryManager, matchId);
 	}
 
-	public MatchList getMatchListByAccountId(Long accountId) throws RiotApiException
+	public MatchList getMatchListByAccountId(String encryptedAccountId) throws RiotApiException
 	{
-		return matchApi.getMatchListByAccountId(queryManager, accountId);
+		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId);
 	}
 
 	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId) throws RiotApiException

@@ -1,5 +1,5 @@
 apply plugin: 'groovy'
-apply plugin: 'java'
+apply plugin: 'jacoco'
 
 ext {
 	date = new Date().format("yyMMdd.HHmm")

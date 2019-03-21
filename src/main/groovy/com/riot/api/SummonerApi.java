@@ -13,7 +13,7 @@ class SummonerApi
 	Summoner getSummonerByName(QueryManager queryManager, String summonerName) throws RiotApiException
 	{
 		logger.debug("summonerName = " + summonerName);
-		String queryString = "/lol/summoner/v3/summoners/by-name/" + summonerName + "?";
+		String queryString = "/lol/summoner/v4/summoners/by-name/" + summonerName + "?";
 
 		String response = queryManager.query(queryString, METHOD.SUMMONER_BY_NAME);
 

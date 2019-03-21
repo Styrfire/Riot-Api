@@ -22,11 +22,11 @@ class SummonerApiTest extends Specification
 			Summoner summoner = new SummonerApi().getSummonerByName(queryManagerMock, "Zann Starfire")
 		then:
 			summoner != null
-			summoner.getProfileIconId() == 3081
+			summoner.getProfileIconId() == 3764
 			summoner.getName() == "Zann Starfire"
-			summoner.getSummonerLevel() == 59
-			summoner.getAccountId() == 206871870
-			summoner.getId() == 44199889
-			summoner.getRevisionDate() == 1520548102000
+			summoner.getSummonerLevel() == 88
+			summoner.getAccountId() == "0aPpp5KW_Q3Ro748Fj2U5P07PuNVA-ReP5RoQTk0vBR_2YQ"
+			summoner.getId() == "84pdBsTQnvNSCfbbPAw0Jg1pr8L1ETvnNG7Nzu6b-7RIIlk"
+			summoner.getRevisionDate() == 1552448155000
 	}
 }

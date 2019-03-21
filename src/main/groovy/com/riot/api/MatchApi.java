@@ -15,7 +15,7 @@ class MatchApi
 	Match getMatchByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
 		logger.debug("matchId = " + matchId);
-		String queryString = "/lol/match/v3/matches/" + matchId.toString() + "?";
+		String queryString = "/lol/match/v4/matches/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_BY_MATCH_ID);
 
@@ -25,17 +25,17 @@ class MatchApi
 	MatchTimeline getMatchTimelineByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{
 		logger.debug("matchId = " + matchId);
-		String queryString = "/lol/match/v3/timelines/by-match/" + matchId.toString() + "?";
+		String queryString = "/lol/match/v4/timelines/by-match/" + matchId.toString() + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_TIMELINE_BY_MATCH_ID);
 
 		return new Gson().fromJson(response, MatchTimeline.class);
 	}
 
-	MatchList getMatchListByAccountId(QueryManager queryManager, Long accountId) throws RiotApiException
+	MatchList getMatchListByAccountId(QueryManager queryManager, String encryptedAccountId) throws RiotApiException
 	{
-		logger.debug("accountId = " + accountId);
-		String queryString = "/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?";
+		logger.debug("encryptedAccountId = " + encryptedAccountId);
+		String queryString = "/lol/match/v4/matchlists/by-account/" + encryptedAccountId + "?";
 
 		String response = queryManager.query(queryString, METHOD.MATCH_LIST_BY_ACCOUNT_ID);
 

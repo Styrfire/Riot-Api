@@ -4,8 +4,9 @@ class Summoner
 {
 	int profileIconId
 	String name
+	String puuid
 	long summonerLevel
 	long revisionDate
-	long id
-	long accountId
+	String id
+	String accountId
 }
