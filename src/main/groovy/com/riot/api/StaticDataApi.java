@@ -5,11 +5,12 @@ import com.riot.dto.StaticData.Champion;
 import com.riot.dto.StaticData.ChampionList;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class StaticDataApi
 {
-	private static Logger logger = Logger.getLogger(StaticDataApi.class);
+	private static Logger logger = LoggerFactory.getLogger(StaticDataApi.class);
 
 	ChampionList getStaticChampionInfo(QueryManager queryManager) throws RiotApiException
 	{

@@ -4,11 +4,12 @@ import com.google.gson.Gson;
 import com.riot.dto.Summoner.Summoner;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class SummonerApi
 {
-	private static Logger logger = Logger.getLogger(SummonerApi.class);
+	private static Logger logger = LoggerFactory.getLogger(SummonerApi.class);
 
 	Summoner getSummonerByName(QueryManager queryManager, String summonerName) throws RiotApiException
 	{

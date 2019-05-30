@@ -2,12 +2,13 @@ package com.riot.api
 
 import com.riot.dto.Summoner.Summoner
 import com.riot.enums.METHOD
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 
 class SummonerApiTest extends Specification
 {
-	private static Logger logger = Logger.getLogger(SummonerApiTest.class)
+	private static Logger logger = LoggerFactory.getLogger(SummonerApiTest.class)
 
 	def "test getSummonerByName"()
 	{

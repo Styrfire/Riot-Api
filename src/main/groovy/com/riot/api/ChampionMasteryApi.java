@@ -5,14 +5,15 @@ import com.google.gson.reflect.TypeToken;
 import com.riot.dto.ChampionMastery.ChampionMastery;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 class ChampionMasteryApi
 {
-	private static Logger logger = Logger.getLogger(ChampionMasteryApi.class);
+	private static Logger logger = LoggerFactory.getLogger(ChampionMasteryApi.class);
 
 	List<ChampionMastery> getChampionMasteriesBySummonerId(QueryManager queryManager, long summonerId) throws RiotApiException
 	{

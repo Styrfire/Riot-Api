@@ -6,11 +6,12 @@ import com.riot.dto.Match.MatchList;
 import com.riot.dto.Match.MatchTimeline;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class MatchApi
 {
-	private static Logger logger = Logger.getLogger(MatchApi.class);
+	private static Logger logger = LoggerFactory.getLogger(MatchApi.class);
 
 	Match getMatchByMatchId(QueryManager queryManager, Long matchId) throws RiotApiException
 	{

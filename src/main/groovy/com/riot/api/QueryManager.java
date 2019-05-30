@@ -3,7 +3,8 @@ package com.riot.api;
 import com.riot.enums.METHOD;
 import com.riot.exception.RiotApiException;
 import com.riot.exception.RiotExceptionCreator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -19,7 +20,7 @@ import java.util.Map;
 
 class QueryManager
 {
-	private static Logger logger = Logger.getLogger(QueryManager.class);
+	private static Logger logger = LoggerFactory.getLogger(QueryManager.class);
 
 	private final String apiKey;
 	private final RiotRateLimiter rateLimiter;
@@ -64,10 +65,10 @@ class QueryManager
 
 			// rate limit headers
 			Map<String, List<String>> headers = responseEntity.getHeaders();
-			logger.debug(headers.get("X-App-Rate-Limit"));
-			logger.debug(headers.get("X-App-Rate-Limit-Count"));
-			logger.debug(headers.get("X-Method-Rate-Limit"));
-			logger.debug(headers.get("X-Method-Rate-Limit-Count"));
+			logger.debug("something", headers.get("X-App-Rate-Limit"));
+			logger.debug("something", headers.get("X-App-Rate-Limit-Count"));
+			logger.debug("something", headers.get("X-Method-Rate-Limit"));
+			logger.debug("something", headers.get("X-Method-Rate-Limit-Count"));
 
 			// updated method rate limit objects
 			rateLimiter.postApiCallRateLimit(method, headers);
@@ -77,13 +78,13 @@ class QueryManager
 		}
 		catch (HttpClientErrorException e)
 		{
-			logger.error(e);
+			logger.error("Status Code: " + e.getStatusCode().value(), e);
 			RiotExceptionCreator.throwException(e.getStatusCode().value());
 			return null;
 		}
 		catch (Exception e)
 		{
-			logger.error(e);
+			logger.error("Oops... Something went wrong...", e);
 			throw new RiotApiException("Oops... Something went wrong...");
 		}
 	}

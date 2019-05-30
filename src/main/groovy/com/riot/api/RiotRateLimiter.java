@@ -3,7 +3,8 @@ package com.riot.api;
 import com.google.common.util.concurrent.RateLimiter;
 import com.riot.dto.RateLimiter.RateLimiterListData;
 import com.riot.enums.METHOD;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,7 +13,7 @@ import java.util.Map;
 
 public class RiotRateLimiter
 {
-	private static Logger logger = Logger.getLogger(RiotRateLimiter.class);
+	private static Logger logger = LoggerFactory.getLogger(RiotRateLimiter.class);
 
 	private boolean methodInList;
 	private boolean appShortInList;

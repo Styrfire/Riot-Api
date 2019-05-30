@@ -4,13 +4,14 @@ import com.riot.dto.Match.Match
 import com.riot.dto.Match.MatchList
 import com.riot.dto.Match.MatchTimeline
 import com.riot.enums.METHOD
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import spock.lang.Ignore
 import spock.lang.Specification
 
 class MatchApiTest extends Specification
 {
-	private static Logger logger = Logger.getLogger(MatchApiTest.class)
+	private static Logger logger = LoggerFactory.getLogger(MatchApiTest.class)
 
 	@Ignore
 	def "test getMatchByMatchId"()

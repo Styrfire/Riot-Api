@@ -3,7 +3,7 @@ apply plugin: 'jacoco'
 
 ext {
 	date = new Date().format("yyMMdd.HHmm")
-	springBootVersion = "1.4.2.RELEASE"
+	springBootVersion = "2.1.5.RELEASE"
 }
 
 versionNum = "${versionNum.replace("SNAPSHOT", "${date}")}"
@@ -30,6 +30,7 @@ dependencies
 	compile 'com.google.code.gson:gson:2.8.0'
 	compile 'javax.inject:javax.inject:1'
 	compile "org.codehaus.groovy:groovy-all:2.4.5" // needed for spockframework
+	compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
 	compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
 
 	testCompile "org.easymock:easymock:3.2"
@@ -37,7 +38,8 @@ dependencies
 	testCompile "org.spockframework:spock-core:1.0-groovy-2.4" //tied to groovy 2.4.5
 }
 
-task wrapper(type: Wrapper) {
+wrapper {
 	description = "Generates gradlew[.bat] scripts"
-	gradleVersion = "2.14"
+	gradleVersion = '5.4.1'
+	distributionType = Wrapper.DistributionType.ALL
 }

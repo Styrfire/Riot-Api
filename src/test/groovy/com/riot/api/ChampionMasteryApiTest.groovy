@@ -2,12 +2,13 @@ package com.riot.api
 
 import com.riot.dto.ChampionMastery.ChampionMastery
 import com.riot.enums.METHOD
-import org.apache.log4j.Logger
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import spock.lang.Specification
 
 class ChampionMasteryApiTest extends Specification
 {
-	private static Logger logger = Logger.getLogger(ChampionMasteryApiTest.class)
+	private static Logger logger = LoggerFactory.getLogger(ChampionMasteryApiTest.class)
 
 	def "test getChampionMasteriesBySummonerId"()
 	{
