@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class RiotRateLimiter
+class RiotRateLimiter
 {
 	private static Logger logger = LoggerFactory.getLogger(RiotRateLimiter.class);
 
@@ -27,12 +27,8 @@ public class RiotRateLimiter
 
 	void preApiCallRateLimit(METHOD method)
 	{
-		methodInList = false;
 		// is method on rateLimiterList
-		if (rateLimiterList.containsKey(method))
-		{
-			methodInList = true;
-		}
+		methodInList = rateLimiterList.containsKey(method);
 
 		// if method is on rateLimiterList
 		if (methodInList)
@@ -57,12 +53,8 @@ public class RiotRateLimiter
 			}
 		}
 
-		appShortInList = false;
 		// is app on rateLimiterList
-		if (rateLimiterList.containsKey(METHOD.API_SHORT))
-		{
-			appShortInList = true;
-		}
+		appShortInList = rateLimiterList.containsKey(METHOD.API_SHORT);
 
 		// if app is on rateLimiterList
 		if (appShortInList)
@@ -87,12 +79,8 @@ public class RiotRateLimiter
 			}
 		}
 
-		appLongInList = false;
 		// is app on rateLimiterList
-		if (rateLimiterList.containsKey(METHOD.API_LONG))
-		{
-			appLongInList = true;
-		}
+		appLongInList = rateLimiterList.containsKey(METHOD.API_LONG);
 
 		// if app is on rateLimiterList
 		if (appLongInList)
@@ -123,7 +111,7 @@ public class RiotRateLimiter
 		// if method wasn't on rateLimiterList, add it
 		if (!methodInList)
 		{
-			Double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(1));
+			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(1));
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
@@ -148,7 +136,7 @@ public class RiotRateLimiter
 		// if api short wasn't on rateLimiterList and the method wasn't static, add it
 		if (!appShortInList && (method != METHOD.STATIC))
 		{
-			Double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
+			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
@@ -172,7 +160,7 @@ public class RiotRateLimiter
 		// if api long wasn't on rateLimiterList and the method wasn't static, add it
 		if (!appLongInList && (method != METHOD.STATIC))
 		{
-			Double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
+			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));

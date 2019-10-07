@@ -17,14 +17,14 @@ class ChampionMasteryApiTest extends Specification
 			ClassLoader classLoader = getClass().getClassLoader()
 			File file = new File(classLoader.getResource("apiResponses/championMastery/championMasteriesBySummonerId.json").getFile())
 			String responseJson = new String(file.readBytes())
-			logger.info("responseJson = " + responseJson)
+			logger.debug("responseJson = " + responseJson)
 			queryManagerMock.query(_ as String, _ as METHOD) >> responseJson
 		when:
 			List<ChampionMastery> championMastery = new ChampionMasteryApi().getChampionMasteriesBySummonerId(queryManagerMock, 44199889)
 		then:
 			championMastery != null
 			championMastery.get(0).getChampionLevel() == 7
-			championMastery.get(0).getChestGranted() == true
+			championMastery.get(0).getChestGranted()
 			championMastery.get(0).getChampionPoints() == 247627
 			championMastery.get(0).getChampionPointsSinceLastLevel() == 226027
 			championMastery.get(0).getPlayerId() == 44199889
