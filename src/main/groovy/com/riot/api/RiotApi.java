@@ -1,76 +1,67 @@
 package com.riot.api;
 
-import com.riot.dto.Summoner;
+import com.riot.dto.ChampionMastery.ChampionMastery;
+import com.riot.dto.Match.Match;
+import com.riot.dto.Match.MatchList;
+import com.riot.dto.Match.MatchTimeline;
+import com.riot.dto.StaticData.Champion;
+import com.riot.dto.StaticData.ChampionList;
+import com.riot.dto.Summoner.Summoner;
+import com.riot.exception.RiotApiException;
 
-import java.util.Map;
+import java.util.List;
 
 public class RiotApi
 {
 	private QueryManager queryManager;
+
+	private ChampionMasteryApi championMasteryApi;
+	private MatchApi matchApi;
+	private StaticDataApi staticDataApi;
 	private SummonerApi summonerApi;
 
-	public RiotApi()
+	public RiotApi(String apiKey)
 	{
-		this.queryManager = new QueryManager();
+		this.queryManager = new QueryManager(apiKey);
+
+		this.championMasteryApi = new ChampionMasteryApi();
+		this.matchApi = new MatchApi();
+		this.staticDataApi = new StaticDataApi();
 		this.summonerApi = new SummonerApi();
 	}
 
-	public Map<String, Summoner> getSummonersByName(String... summonerName)
-	{
-		return summonerApi.getSummonersByName(queryManager, summonerName);
-	}
-
-	public Summoner getSummonerByName(String summonerName)
+	public Summoner getSummonerByName(String summonerName) throws RiotApiException
 	{
 		return summonerApi.getSummonerByName(queryManager, summonerName);
 	}
 
-/*	public Map<String, Summoner> getSummonersByName(String... summonerNames)
+	public Match getMatchByMatchId(Long matchId) throws RiotApiException
 	{
-		System.out.println("summonerNames.toString() = " + summonerNames.length);
-		for (int i = 0; i < summonerNames.length; i++)
-			summonerNames[i] = summonerNames[i].toLowerCase().replace(" ", "");
-
-		String queryString = "/api/lol/na/v1.4/summoner/by-name/" + summonerNames[0];
-		for (int i = 1; i < summonerNames.length; i++)
-			queryString += "," + summonerNames[i];
-
-		System.out.println("queryString = " + queryString);
-		String response = queryManager.query(queryString);
-		Type mapType = new TypeToken<HashMap<String,Summoner>>(){}.getType();
-
-		return new Gson().fromJson(response, mapType);
+		return matchApi.getMatchByMatchId(queryManager, matchId);
 	}
 
-	public Summoner getSummonerByName(String summonerName)
+	public MatchTimeline getMatchTimelineByMatchId(Long matchId) throws RiotApiException
 	{
-		summonerName = summonerName.toLowerCase().replace(" ", "");
-		return getSummonersByName(summonerName).get(summonerName);
-	}*/
+		return matchApi.getMatchTimelineByMatchId(queryManager, matchId);
+	}
 
-/*	public MatchList getMatchListBySummonerId(Integer summonerId, int[] championIds, String[] rankedQueues, String[] seasons)
+	public MatchList getMatchListByAccountId(String encryptedAccountId) throws RiotApiException
 	{
-		String queryString = "" + summonerId;
-		if (championIds != null)
-			for (int i = 1; i < championIds.length; i++)
-				queryString += "";
+		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId);
+	}
 
-		if (rankedQueues != null)
-		{
-			queryString += "?rankedQueues=" + rankedQueues[0];
-			for (int i = 1; i < rankedQueues.length; i++)
-				queryString += "," + rankedQueues[i];
-		}
+	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId) throws RiotApiException
+	{
+		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
+	}
 
-		if (seasons != null)
-		{
-			queryString += "";
-			for (int i = 1; i < seasons.length; i++)
-				queryString += "";
-		}
+	public ChampionList getStaticChampionInfo(String patchVersion) throws RiotApiException
+	{
+		return staticDataApi.getStaticChampionInfo(queryManager, patchVersion);
+	}
 
-		String response = queryManager.query(queryString);
-
-		return new Gson().fromJson(response, MatchList.class);
+	/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+	{
+		return matchApi.getMatchListByAccountId(queryManager, accountId, championIds, rankedQueues, seasons, beginIndex, endIndex);
 	}*/
 }

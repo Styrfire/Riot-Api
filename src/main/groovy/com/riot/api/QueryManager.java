@@ -1,68 +1,101 @@
 package com.riot.api;
 
-import com.google.common.util.concurrent.RateLimiter;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.riot.enums.METHOD;
+import com.riot.exception.RiotApiException;
+import com.riot.exception.RiotExceptionCreator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.ClientHttpResponse;
+import org.springframework.util.FileCopyUtils;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResponseErrorHandler;
+import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
 
-public class QueryManager
+class QueryManager
 {
-	private static final double DEFAULT_SHORT_RATE_LIMIT = 10/10.0;
-	private static final double DEFAULT_LONG_RATE_LIMIT = 600/500.0;
+	private static Logger logger = LoggerFactory.getLogger(QueryManager.class);
 
-	private final RateLimiter shortRateLimiter;
-	private final RateLimiter longRateLimiter;
+	private final String apiKey;
+	private final RiotRateLimiter rateLimiter;
+	private final RestTemplate restTemplate;
 
-	public QueryManager()
+	QueryManager(String apiKey)
 	{
-		longRateLimiter = RateLimiter.create(DEFAULT_LONG_RATE_LIMIT);
-		shortRateLimiter = RateLimiter.create(DEFAULT_SHORT_RATE_LIMIT);
+		this.apiKey = apiKey;
+		this.rateLimiter = new RiotRateLimiter();
+		this.restTemplate = new RestTemplate();
+		// custom error handler for RestTemplate that throws exception when statusCode >= 300, not just 4xx and 5xx
+		restTemplate.setErrorHandler(new ResponseErrorHandler()
+		{
+			@Override
+			public boolean hasError(ClientHttpResponse response) throws IOException
+			{
+				return response.getStatusCode().value() >= 300;
+			}
+
+			@Override
+			public void handleError(ClientHttpResponse response) throws IOException
+			{
+				MediaType contentType = response.getHeaders().getContentType();
+				Charset charset = contentType != null ? contentType.getCharset() : null;
+				byte[] body = FileCopyUtils.copyToByteArray(response.getBody());
+				throw new HttpClientErrorException(response.getStatusCode(), response.getStatusText(), body, charset);
+			}
+		});
 	}
 
-	public String query(String queryUrl)
+	String query(String queryUrl, METHOD method) throws RiotApiException
 	{
 		try
 		{
-			//respect rate limit
-			if (!shortRateLimiter.tryAcquire())
-				System.out.println("ShortRateLimiterFailed");
-			if (!longRateLimiter.tryAcquire())
-				System.out.println("LongRateLimiterFailed");
-
-			shortRateLimiter.acquire();
-			longRateLimiter.acquire();
-
-			URL url = new URL("https://na.api.pvp.net" + queryUrl + "?api_key=e76cf560-ec14-4aae-946c-35967340214d");
-			HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-			connection.setRequestMethod("GET");
-			connection.setDoOutput(true);
-
-			// handle exceptions
-			if (connection.getResponseCode() >= 300)
-				throw new Exception();
-
-			// Get the response
-			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			String line, response = "";
-			while ((line = bufferedReader.readLine()) != null)
+			ResponseEntity<String> responseEntity;
+			// if method is static, it will provide it's own query url as opposed to working with the riot api
+			// it also doesn't need the rate limiting stuff
+			if (method == METHOD.STATIC)
 			{
-				response += line;
+				logger.info("urlString = " + queryUrl);
+				responseEntity = restTemplate.getForEntity(queryUrl, String.class);
 			}
-			bufferedReader.close();
-//			response = connection.getResponseMessage();
-			System.out.println("ResponseCode = " + connection.getResponseCode());
-//			System.out.println("Response = " + response);
+			else
+			{
+				// check to make sure the method isn't exceeding it's rate limit
+				rateLimiter.preApiCallRateLimit(method);
 
-			return response;
+				// make the api call
+				String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
+				logger.info("urlString = " + urlString);
+				responseEntity = restTemplate.getForEntity(urlString, String.class);
+
+				// rate limit headers
+				Map<String, List<String>> headers = responseEntity.getHeaders();
+				logger.debug("something", headers.get("X-App-Rate-Limit"));
+				logger.debug("something", headers.get("X-App-Rate-Limit-Count"));
+				logger.debug("something", headers.get("X-Method-Rate-Limit"));
+				logger.debug("something", headers.get("X-Method-Rate-Limit-Count"));
+
+				// updated method rate limit objects
+				rateLimiter.postApiCallRateLimit(method, headers);
+			}
+			// return the response
+			return responseEntity.getBody();
+		}
+		catch (HttpClientErrorException e)
+		{
+			logger.error("Status Code: " + e.getStatusCode().value(), e);
+			RiotExceptionCreator.throwException(e.getStatusCode().value());
+			return null;
 		}
 		catch (Exception e)
 		{
-			e.getMessage();
-			return null;
+			logger.error("Oops... Something went wrong...", e);
+			throw new RiotApiException("Oops... Something went wrong...");
 		}
 	}
 }

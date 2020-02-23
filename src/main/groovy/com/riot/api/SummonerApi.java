@@ -1,35 +1,23 @@
 package com.riot.api;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import com.riot.dto.Summoner;
+import com.riot.dto.Summoner.Summoner;
+import com.riot.enums.METHOD;
+import com.riot.exception.RiotApiException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.Map;
-
-public class SummonerApi
+class SummonerApi
 {
-	Map<String, Summoner> getSummonersByName(QueryManager queryManager, String... summonerNames)
+	private static Logger logger = LoggerFactory.getLogger(SummonerApi.class);
+
+	Summoner getSummonerByName(QueryManager queryManager, String summonerName) throws RiotApiException
 	{
-		System.out.println("summonerNames.toString() = " + summonerNames.length);
-		for (int i = 0; i < summonerNames.length; i++)
-			summonerNames[i] = summonerNames[i].toLowerCase().replace(" ", "");
+		logger.debug("summonerName = " + summonerName);
+		String queryString = "/lol/summoner/v4/summoners/by-name/" + summonerName + "?";
 
-		String queryString = "/api/lol/na/v1.4/summoner/by-name/" + summonerNames[0];
-		for (int i = 1; i < summonerNames.length; i++)
-			queryString += "," + summonerNames[i];
+		String response = queryManager.query(queryString, METHOD.SUMMONER_BY_NAME);
 
-		System.out.println("queryString = " + queryString);
-		String response = queryManager.query(queryString);
-		Type mapType = new TypeToken<HashMap<String,Summoner>>(){}.getType();
-
-		return new Gson().fromJson(response, mapType);
-	}
-
-	Summoner getSummonerByName(QueryManager queryManager, String summonerName)
-	{
-		summonerName = summonerName.toLowerCase().replace(" ", "");
-		return getSummonersByName(queryManager, summonerName).get(summonerName);
+		return new Gson().fromJson(response, Summoner.class);
 	}
 }

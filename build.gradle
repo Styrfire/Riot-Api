@@ -1,10 +1,20 @@
 apply plugin: 'groovy'
-apply plugin: 'java'
+apply plugin: 'jacoco'
+
+ext {
+	date = new Date().format("yyMMdd.HHmm")
+	springBootVersion = "2.1.5.RELEASE"
+}
+
+versionNum = "${versionNum.replace("SNAPSHOT", "${date}")}"
 
 jar
 {
 	baseName = 'riot-api'
-	version =  '1.0.0'
+	manifest {
+		attributes 'application-version': versionNum
+	}
+	from sourceSets.main.allSource
 }
 
 repositories
@@ -15,10 +25,23 @@ repositories
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
-dependencies 
+dependencies
 {
 	compile 'com.google.guava:guava:17.0'
 	compile 'com.google.code.gson:gson:2.8.0'
 	compile 'javax.inject:javax.inject:1'
-	compile "org.codehaus.groovy:groovy-all:2.4.5"
+	compile "org.codehaus.groovy:groovy-all:2.4.5" // needed for spockframework
+	compile "org.springframework.boot:spring-boot-starter:${springBootVersion}"
+	compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+
+	testCompile "junit:junit:4.12"
+	testCompile "org.easymock:easymock:3.2"
+	testCompile "org.powermock:powermock:1.5.6"
+	testCompile "org.spockframework:spock-core:1.0-groovy-2.4" //tied to groovy 2.4.5
+}
+
+wrapper {
+	description = "Generates gradlew[.bat] scripts"
+	gradleVersion = '5.4.1'
+	distributionType = Wrapper.DistributionType.ALL
 }
