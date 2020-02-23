@@ -9,20 +9,19 @@ import org.slf4j.LoggerFactory
 import spock.lang.Ignore
 import spock.lang.Specification
 
-class MatchApiTest extends Specification
+class MatchApiIntegrationTest extends Specification
 {
-	private static Logger logger = LoggerFactory.getLogger(MatchApiTest.class)
+	private static Logger logger = LoggerFactory.getLogger(MatchApiIntegrationTest.class)
 
 	@Ignore
 	def "test getMatchByMatchId"()
 	{
 		given:
-			RiotApi api = new RiotApi("")
+			RiotApi api = new RiotApi("API_KEY")
 		when:
-			Match match = api.getMatchByMatchId(2448574892)
+			Match match = api.getMatchByMatchId(1111111111)
 		then:
 			match != null
-			match.getGameId() == 2448574892
 	}
 
 	@Ignore
@@ -31,10 +30,9 @@ class MatchApiTest extends Specification
 		given:
 			RiotApi api = new RiotApi("")
 		when:
-			MatchTimeline matchTimeline = api.getMatchTimelineByMatchId(2448574892)
+			MatchTimeline matchTimeline = api.getMatchTimelineByMatchId(1111111111)
 		then:
 			matchTimeline != null
-			matchTimeline.getFrameInterval() == 60000
 	}
 
 	def "test getMatchListByAccountId"()

@@ -6,8 +6,8 @@ class Player
 	String summonerName
 	String matchHistoryUri
 	String platformId
-	long currentAccountId
+	String currentAccountId //encrypted
 	int profileIcon
-	long summonerId
-	long accountId
+	String summonerId //encrypted
+	String accountId //encrypted
 }
