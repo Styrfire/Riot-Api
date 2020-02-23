@@ -55,14 +55,9 @@ public class RiotApi
 		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
-	public ChampionList getStaticChampionInfo() throws RiotApiException
+	public ChampionList getStaticChampionInfo(String patchVersion) throws RiotApiException
 	{
-		return staticDataApi.getStaticChampionInfo(queryManager);
-	}
-
-	public Champion getStaticChampionInfoById(int championId) throws RiotApiException
-	{
-		return staticDataApi.getStaticChampionInfoById(queryManager, championId);
+		return staticDataApi.getStaticChampionInfo(queryManager, patchVersion);
 	}
 
 	/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)

@@ -55,24 +55,34 @@ class QueryManager
 	{
 		try
 		{
-			// check to make sure the method isn't exceeding it's rate limit
-			rateLimiter.preApiCallRateLimit(method);
+			ResponseEntity<String> responseEntity;
+			// if method is static, it will provide it's own query url as opposed to working with the riot api
+			// it also doesn't need the rate limiting stuff
+			if (method == METHOD.STATIC)
+			{
+				logger.info("urlString = " + queryUrl);
+				responseEntity = restTemplate.getForEntity(queryUrl, String.class);
+			}
+			else
+			{
+				// check to make sure the method isn't exceeding it's rate limit
+				rateLimiter.preApiCallRateLimit(method);
 
-			// make the api call
-			String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
-			logger.info("urlString = " + urlString);
-			ResponseEntity<String> responseEntity = restTemplate.getForEntity(urlString, String.class);
+				// make the api call
+				String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
+				logger.info("urlString = " + urlString);
+				responseEntity = restTemplate.getForEntity(urlString, String.class);
 
-			// rate limit headers
-			Map<String, List<String>> headers = responseEntity.getHeaders();
-			logger.debug("something", headers.get("X-App-Rate-Limit"));
-			logger.debug("something", headers.get("X-App-Rate-Limit-Count"));
-			logger.debug("something", headers.get("X-Method-Rate-Limit"));
-			logger.debug("something", headers.get("X-Method-Rate-Limit-Count"));
+				// rate limit headers
+				Map<String, List<String>> headers = responseEntity.getHeaders();
+				logger.debug("something", headers.get("X-App-Rate-Limit"));
+				logger.debug("something", headers.get("X-App-Rate-Limit-Count"));
+				logger.debug("something", headers.get("X-Method-Rate-Limit"));
+				logger.debug("something", headers.get("X-Method-Rate-Limit-Count"));
 
-			// updated method rate limit objects
-			rateLimiter.postApiCallRateLimit(method, headers);
-
+				// updated method rate limit objects
+				rateLimiter.postApiCallRateLimit(method, headers);
+			}
 			// return the response
 			return responseEntity.getBody();
 		}
