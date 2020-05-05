@@ -15,9 +15,6 @@ class RiotRateLimiter
 {
 	private static Logger logger = LoggerFactory.getLogger(RiotRateLimiter.class);
 
-	private boolean methodInList;
-	private boolean appShortInList;
-	private boolean appLongInList;
 	private Map<METHOD, RateLimiterListData> rateLimiterList;
 
 	RiotRateLimiter()
@@ -27,18 +24,12 @@ class RiotRateLimiter
 
 	void preApiCallRateLimit(METHOD method)
 	{
-		// is method on rateLimiterList
-		methodInList = rateLimiterList.containsKey(method);
-
 		// if method is on rateLimiterList
-		if (methodInList)
+		if (rateLimiterList.containsKey(method))
 		{
 			// if method is outside time window, remove it from list because the time window has reset
 			if (rateLimiterList.get(method).getRateLimiter().tryAcquire())
-			{
 				rateLimiterList.remove(method);
-				methodInList = false;
-			}
 			// if method is still inside time window
 			else
 			{
@@ -48,23 +39,16 @@ class RiotRateLimiter
 				{
 					rateLimiterList.get(method).getRateLimiter().acquire();
 					rateLimiterList.remove(method);
-					methodInList = false;
 				}
 			}
 		}
 
-		// is app on rateLimiterList
-		appShortInList = rateLimiterList.containsKey(METHOD.API_SHORT);
-
 		// if app is on rateLimiterList
-		if (appShortInList)
+		if (rateLimiterList.containsKey(METHOD.API_SHORT))
 		{
 			// if app is outside time window, remove it from list because the time window has reset
 			if (rateLimiterList.get(METHOD.API_SHORT).getRateLimiter().tryAcquire())
-			{
 				rateLimiterList.remove(METHOD.API_SHORT);
-				appShortInList = false;
-			}
 			// if method is still inside time window
 			else
 			{
@@ -74,23 +58,16 @@ class RiotRateLimiter
 				{
 					rateLimiterList.get(METHOD.API_SHORT).getRateLimiter().acquire();
 					rateLimiterList.remove(METHOD.API_SHORT);
-					appShortInList = false;
 				}
 			}
 		}
 
-		// is app on rateLimiterList
-		appLongInList = rateLimiterList.containsKey(METHOD.API_LONG);
-
 		// if app is on rateLimiterList
-		if (appLongInList)
+		if (rateLimiterList.containsKey(METHOD.API_LONG))
 		{
 			// if app is outside time window, remove it from list because the time window has reset
 			if (rateLimiterList.get(METHOD.API_LONG).getRateLimiter().tryAcquire())
-			{
 				rateLimiterList.remove(METHOD.API_LONG);
-				appLongInList = false;
-			}
 			// if method is still inside time window
 			else
 			{
@@ -100,7 +77,6 @@ class RiotRateLimiter
 				{
 					rateLimiterList.get(METHOD.API_LONG).getRateLimiter().acquire();
 					rateLimiterList.remove(METHOD.API_LONG);
-					appLongInList = false;
 				}
 			}
 		}
@@ -109,7 +85,7 @@ class RiotRateLimiter
 	void postApiCallRateLimit(METHOD method, Map<String, List<String>> headers)
 	{
 		// if method wasn't on rateLimiterList, add it
-		if (!methodInList)
+		if (!rateLimiterList.containsKey(method))
 		{
 			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(1));
 
@@ -134,7 +110,7 @@ class RiotRateLimiter
 
 		// static methods don't count against the application api and won't have the headers
 		// if api short wasn't on rateLimiterList and the method wasn't static, add it
-		if (!appShortInList && (method != METHOD.STATIC))
+		if (!rateLimiterList.containsKey(METHOD.API_SHORT) && (method != METHOD.STATIC))
 		{
 			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
 
@@ -158,7 +134,7 @@ class RiotRateLimiter
 		}
 
 		// if api long wasn't on rateLimiterList and the method wasn't static, add it
-		if (!appLongInList && (method != METHOD.STATIC))
+		if (!rateLimiterList.containsKey(METHOD.API_LONG) && (method != METHOD.STATIC))
 		{
 			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
 
