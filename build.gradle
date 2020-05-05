@@ -6,13 +6,13 @@ ext {
 	springBootVersion = "2.1.5.RELEASE"
 }
 
-versionNum = "${versionNum.replace("SNAPSHOT", "${date}")}"
+version = "${version.replace("SNAPSHOT", "${date}")}"
 
 jar
 {
 	baseName = 'riot-api'
 	manifest {
-		attributes 'application-version': versionNum
+		attributes 'application-version': version
 	}
 	from sourceSets.main.allSource
 }

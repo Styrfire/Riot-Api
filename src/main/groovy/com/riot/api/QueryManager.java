@@ -75,10 +75,10 @@ class QueryManager
 
 				// rate limit headers
 				Map<String, List<String>> headers = responseEntity.getHeaders();
-				logger.debug("something", headers.get("X-App-Rate-Limit"));
-				logger.debug("something", headers.get("X-App-Rate-Limit-Count"));
-				logger.debug("something", headers.get("X-Method-Rate-Limit"));
-				logger.debug("something", headers.get("X-Method-Rate-Limit-Count"));
+				logger.debug("X-App-Rate-Limit = " + headers.get("X-App-Rate-Limit"));
+				logger.debug("X-App-Rate-Limit-Count = " + headers.get("X-App-Rate-Limit-Count"));
+				logger.debug("X-Method-Rate-Limit = " + headers.get("X-Method-Rate-Limit"));
+				logger.debug("X-Method-Rate-Limit-Count = " + headers.get("X-Method-Rate-Limit-Count"));
 
 				// updated method rate limit objects
 				rateLimiter.postApiCallRateLimit(method, headers);

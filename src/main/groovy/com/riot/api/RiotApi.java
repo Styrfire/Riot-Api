@@ -60,8 +60,8 @@ public class RiotApi
 		return staticDataApi.getStaticChampionInfo(queryManager, patchVersion);
 	}
 
-	/*	public MatchList getMatchlistByAccountId(Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex)
+	public MatchList getMatchListByAccountId(String encryptedAccountId, Integer[] championIds, Integer[] rankedQueues, Integer[] seasons, Long beginTime, Long endTime, Integer beginIndex, Integer endIndex) throws RiotApiException
 	{
-		return matchApi.getMatchListByAccountId(queryManager, accountId, championIds, rankedQueues, seasons, beginIndex, endIndex);
-	}*/
+		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
+	}
 }
