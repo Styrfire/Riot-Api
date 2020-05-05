@@ -47,7 +47,8 @@ class MatchApiIntegrationTest extends Specification
 			logger.info("responseJson = " + responseJson)
 			queryManagerMock.query(_ as String, _ as METHOD) >> responseJson
 		when:
-			MatchList matchList = new MatchApi().getMatchListByAccountId(queryManagerMock, "0aPpp5KW_Q3Ro748Fj2U5P07PuNVA-ReP5RoQTk0vBR_2YQ")
+			// with Zann Starfire using My Worst Enemy key
+			MatchList matchList = new MatchApi().getMatchListByAccountId(queryManagerMock, "cPkWNSpBp7c3IdQi712Zp9TfDyn27rn20EpbgGVPs3HCvb4")
 		then:
 			matchList != null
 			matchList.getMatches() != null
