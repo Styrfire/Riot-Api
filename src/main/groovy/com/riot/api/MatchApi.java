@@ -43,63 +43,90 @@ class MatchApi
 		return new Gson().fromJson(response, MatchList.class);
 	}
 
-/*	MatchList getMatchListByAccountId(QueryManager queryManager, Integer accountId, Integer[] championIds, String[] rankedQueues, String[] seasons, Integer beginIndex, Integer endIndex) throws Exception
+	MatchList getMatchListByAccountId(QueryManager queryManager, String encryptedAccountId, Integer[] championIds, Integer[] rankedQueues, Integer[] seasons, Long beginTime, Long endTime, Integer beginIndex, Integer endIndex) throws RiotApiException
 	{
-		StringBuilder queryString = new StringBuilder("/lol/match/v3/matchlists/by-account/" + accountId.toString() + "?");
+		logger.debug("encryptedAccountId = " + encryptedAccountId);
+
+		if (championIds != null)
+		{
+			for (int i = 0; i < championIds.length; i++)
+				logger.debug("championIds[" + i + "] = " + championIds[i]);
+		}
+		else
+			logger.debug("championIds[] = null");
+
+		if (rankedQueues != null)
+		{
+			for (int i = 0; i < rankedQueues.length; i++)
+				logger.debug("rankedQueues[" + i + "] = " + rankedQueues[i]);
+		}
+		else
+			logger.debug("rankedQueues[] = null");
+
+		if (seasons != null)
+		{
+			for (int i = 0; i < seasons.length; i++)
+				logger.debug("seasons[" + i + "] = " + seasons[i]);
+		}
+		else
+			logger.debug("seasons[] = null");
+
+		logger.debug("beginTime = " + beginTime);
+		logger.debug("endTime = " + endTime);
+		logger.debug("beginIndex = " + beginIndex);
+		logger.debug("endIndex = " + endIndex);
+
+		StringBuilder queryString = new StringBuilder("/lol/match/v4/matchlists/by-account/" + encryptedAccountId + "?");
+
 		if (championIds != null)
 		{
 			queryString.append("championIds=").append(championIds[0]);
 			for (int i = 1; i < championIds.length; i++)
 				queryString.append(",").append(championIds[i]);
+
+			queryString.append("&");
 		}
 
 		if (rankedQueues != null)
 		{
-			if (championIds != null)
-				queryString.append("&");
-
 			queryString.append("rankedQueues=").append(rankedQueues[0]);
 			for (int i = 1; i < rankedQueues.length; i++)
-				queryString.append(",").append(rankedQueues[i]);
+				queryString.append(",").append(rankedQueues[i] + "&");
+
+			queryString.append("&");
 		}
 
 		if (seasons != null)
 		{
-			if (championIds != null || rankedQueues != null)
-				queryString.append("&");
-
 			queryString.append("seasons=").append(seasons[0]);
 			for (int i = 1; i < seasons.length; i++)
 				queryString.append(",").append(seasons[i]);
+
+			queryString.append("&");
+		}
+
+		if (beginTime != null)
+		{
+			queryString.append("beginTime=" + beginTime).append("&");
+		}
+
+		if (endTime != null)
+		{
+			queryString.append("endTime=" + endTime).append("&");
 		}
 
 		if (beginIndex != null)
 		{
-			if (championIds != null || rankedQueues != null || seasons != null)
-				queryString.append("&");
-
-			queryString.append(beginIndex);
+			queryString.append("beginIndex=" + beginIndex).append("&");
 		}
 
-		if (beginIndex != null)
+		if (endIndex != null)
 		{
-			if (championIds != null || rankedQueues != null || seasons != null || beginIndex != null)
-				queryString.append("&");
-
-			queryString.append(endIndex);
+			queryString.append("endIndex=" + endIndex).append("&");
 		}
 
-		String response = null;
-		try
-		{
-			response = queryManager.query(queryString.toString());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-			throw e;
-		}
+		String response = queryManager.query(queryString.toString(), METHOD.MATCH_LIST_BY_ACCOUNT_ID);
 
 		return new Gson().fromJson(response, MatchList.class);
-	}*/
+	}
 }
