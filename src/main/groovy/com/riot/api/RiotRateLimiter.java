@@ -28,6 +28,7 @@ class RiotRateLimiter
 		if (rateLimiterList.containsKey(method))
 		{
 			// if method is outside time window, remove it from list because the time window has reset
+			// if tryAcquire() returns true, it's because the time has reset
 			if (rateLimiterList.get(method).getRateLimiter().tryAcquire())
 				rateLimiterList.remove(method);
 			// if method is still inside time window
@@ -91,6 +92,8 @@ class RiotRateLimiter
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
+			// immediately burn the permit for the preApiCallRateLimiter
+			rateLimiterListData.getRateLimiter().acquire();
 			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(0)));
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(0)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(1)));
@@ -116,6 +119,8 @@ class RiotRateLimiter
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
+			// immediately burn the permit for the preApiCallRateLimiter
+			rateLimiterListData.getRateLimiter().acquire();
 			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(0)));
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(0)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(1)));
@@ -140,6 +145,8 @@ class RiotRateLimiter
 
 			RateLimiterListData rateLimiterListData = new RateLimiterListData();
 			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
+			// immediately burn the permit for the preApiCallRateLimiter
+			rateLimiterListData.getRateLimiter().acquire();
 			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(2)));
 			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(2)));
 			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(3)));

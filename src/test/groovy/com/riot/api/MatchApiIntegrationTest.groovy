@@ -70,4 +70,20 @@ class MatchApiIntegrationTest extends Specification
 		then:
 			matchList != null
 	}
+
+	@Ignore
+	def "test getMatchListByAccountId with parameters 130 times"()
+	{
+		given:
+			apiKey = System.getProperty("api.key")
+			RiotApi api = new RiotApi(apiKey)
+			QueryManager queryManager = new QueryManager(apiKey)
+		when:
+			// with Chadwîck using My Worst Enemy key
+			MatchList matchList
+			for (int i = 0; i < 130; i++)
+				matchList= new MatchApi().getMatchListByAccountId(queryManager, "7H-6fWTCIIiD6ct-FlxfgxL3Eq7lW8qIdkL-CibUWlutOhE", null, null, null, null, null, null, null)
+		then:
+			matchList != null
+	}
 }
