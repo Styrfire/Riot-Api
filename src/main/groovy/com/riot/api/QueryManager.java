@@ -53,49 +53,59 @@ class QueryManager
 
 	String query(String queryUrl, METHOD method) throws RiotApiException
 	{
-		try
+		int count = 0;
+		int maxTries = 3;
+		while(true)
 		{
-			ResponseEntity<String> responseEntity;
-			// if method is static, it will provide it's own query url as opposed to working with the riot api
-			// it also doesn't need the rate limiting stuff
-			if (method == METHOD.STATIC)
+			try
 			{
-				logger.info("urlString = " + queryUrl);
-				responseEntity = restTemplate.getForEntity(queryUrl, String.class);
+				ResponseEntity<String> responseEntity;
+				// if method is static, it will provide it's own query url as opposed to working with the riot api
+				// it also doesn't need the rate limiting stuff
+				if (method == METHOD.STATIC)
+				{
+					logger.info("urlString = " + queryUrl);
+					responseEntity = restTemplate.getForEntity(queryUrl, String.class);
+				}
+				else
+				{
+					// check to make sure the method isn't exceeding it's rate limit
+					rateLimiter.preApiCallRateLimit(method);
+
+					// make the api call
+					String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
+					logger.info("urlString = " + urlString);
+					responseEntity = restTemplate.getForEntity(urlString, String.class);
+
+					// rate limit headers
+					Map<String, List<String>> headers = responseEntity.getHeaders();
+					logger.debug("X-App-Rate-Limit = " + headers.get("X-App-Rate-Limit"));
+					logger.debug("X-App-Rate-Limit-Count = " + headers.get("X-App-Rate-Limit-Count"));
+					logger.debug("X-Method-Rate-Limit = " + headers.get("X-Method-Rate-Limit"));
+					logger.debug("X-Method-Rate-Limit-Count = " + headers.get("X-Method-Rate-Limit-Count"));
+
+					// updated method rate limit objects
+					rateLimiter.postApiCallRateLimit(method, headers);
+				}
+				// return the response
+				return responseEntity.getBody();
 			}
-			else
+			catch (HttpClientErrorException e)
 			{
-				// check to make sure the method isn't exceeding it's rate limit
-				rateLimiter.preApiCallRateLimit(method);
-
-				// make the api call
-				String urlString = "https://na1.api.riotgames.com" + queryUrl + "api_key=" + apiKey;
-				logger.info("urlString = " + urlString);
-				responseEntity = restTemplate.getForEntity(urlString, String.class);
-
-				// rate limit headers
-				Map<String, List<String>> headers = responseEntity.getHeaders();
-				logger.debug("X-App-Rate-Limit = " + headers.get("X-App-Rate-Limit"));
-				logger.debug("X-App-Rate-Limit-Count = " + headers.get("X-App-Rate-Limit-Count"));
-				logger.debug("X-Method-Rate-Limit = " + headers.get("X-Method-Rate-Limit"));
-				logger.debug("X-Method-Rate-Limit-Count = " + headers.get("X-Method-Rate-Limit-Count"));
-
-				// updated method rate limit objects
-				rateLimiter.postApiCallRateLimit(method, headers);
+				logger.error("Status Code: " + e.getStatusCode().value(), e);
+				if (e.getStatusCode().value() != 504 || count >= maxTries)
+				{
+					RiotExceptionCreator.throwException(e.getStatusCode().value());
+					return null;
+				}
+				else
+					count++;
 			}
-			// return the response
-			return responseEntity.getBody();
-		}
-		catch (HttpClientErrorException e)
-		{
-			logger.error("Status Code: " + e.getStatusCode().value(), e);
-			RiotExceptionCreator.throwException(e.getStatusCode().value());
-			return null;
-		}
-		catch (Exception e)
-		{
-			logger.error("Oops... Something went wrong...", e);
-			throw new RiotApiException("Oops... Something went wrong...");
+			catch (Exception e)
+			{
+				logger.error("Oops... Something went wrong...", e);
+				throw new RiotApiException("Oops... Something went wrong...");
+			}
 		}
 	}
 }
