@@ -88,22 +88,31 @@ class RiotRateLimiter
 		// if method wasn't on rateLimiterList, add it
 		if (!rateLimiterList.containsKey(method))
 		{
-			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(1));
+			// if headers are not null, go normal path
+			if (headers != null)
+			{
+				double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(1));
 
-			RateLimiterListData rateLimiterListData = new RateLimiterListData();
-			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
-			// immediately burn the permit for the preApiCallRateLimiter
-			rateLimiterListData.getRateLimiter().acquire();
-			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(0)));
-			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(0)));
-			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(1)));
+				RateLimiterListData rateLimiterListData = new RateLimiterListData();
+				rateLimiterListData.setRateLimiter(RateLimiter.create(1 / timeWindow));
+				// immediately burn the permit for the preApiCallRateLimiter
+				rateLimiterListData.getRateLimiter().acquire();
+				rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(0)));
+				rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit").get(0).split(":")).get(0)));
+				rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-Method-Rate-Limit-Count").get(0).split(":")).get(1)));
 
-			logger.debug("methodTimeWindow = " + timeWindow +
-			"\nmethodNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
-			"\nmethodMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
-			"\nmethodTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
+				logger.debug("methodTimeWindow = " + timeWindow +
+						"\nmethodNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
+						"\nmethodMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
+						"\nmethodTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
 
-			rateLimiterList.put(method, rateLimiterListData);
+				rateLimiterList.put(method, rateLimiterListData);
+			}
+			// else, we're in retry logic and don't have headers to instantiate the Rate Limiter. Wait for the next call and it should correct itself
+			else
+			{
+				logger.error("In retry logic and don't have headers ton instantiate Rate Limiter");
+			}
 		}
 		// if method was on list, update the number of calls it's made within the time window
 		else
@@ -115,22 +124,31 @@ class RiotRateLimiter
 		// if api short wasn't on rateLimiterList and the method wasn't static, add it
 		if (!rateLimiterList.containsKey(METHOD.API_SHORT) && (method != METHOD.STATIC))
 		{
-			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
+			// if headers are not null, go normal path
+			if (headers != null)
+			{
+				double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(1));
 
-			RateLimiterListData rateLimiterListData = new RateLimiterListData();
-			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
-			// immediately burn the permit for the preApiCallRateLimiter
-			rateLimiterListData.getRateLimiter().acquire();
-			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(0)));
-			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(0)));
-			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(1)));
+				RateLimiterListData rateLimiterListData = new RateLimiterListData();
+				rateLimiterListData.setRateLimiter(RateLimiter.create(1 / timeWindow));
+				// immediately burn the permit for the preApiCallRateLimiter
+				rateLimiterListData.getRateLimiter().acquire();
+				rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(0)));
+				rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(0)));
+				rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(1)));
 
-			logger.debug("appShortTimeWindow = " + timeWindow +
-			"\nappShortNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
-			"\nappShortMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
-			"\nappShortTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
+				logger.debug("appShortTimeWindow = " + timeWindow +
+						"\nappShortNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
+						"\nappShortMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
+						"\nappShortTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
 
-			rateLimiterList.put(METHOD.API_SHORT, rateLimiterListData);
+				rateLimiterList.put(METHOD.API_SHORT, rateLimiterListData);
+			}
+			// else, we're in retry logic and don't have headers to instantiate the Rate Limiter. Wait for the next call and it should correct itself
+			else
+			{
+				logger.error("In retry logic and don't have headers ton instantiate Rate Limiter");
+			}
 		}
 		// if api short was on list and the method wasn't static, update the number of calls it's made within the time window
 		else if (method != METHOD.STATIC)
@@ -141,22 +159,31 @@ class RiotRateLimiter
 		// if api long wasn't on rateLimiterList and the method wasn't static, add it
 		if (!rateLimiterList.containsKey(METHOD.API_LONG) && (method != METHOD.STATIC))
 		{
-			double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
+			// if headers are not null, go normal path
+			if (headers != null)
+			{
+				double timeWindow = Double.parseDouble(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(3));
 
-			RateLimiterListData rateLimiterListData = new RateLimiterListData();
-			rateLimiterListData.setRateLimiter(RateLimiter.create(1/timeWindow));
-			// immediately burn the permit for the preApiCallRateLimiter
-			rateLimiterListData.getRateLimiter().acquire();
-			rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(2)));
-			rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(2)));
-			rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(3)));
+				RateLimiterListData rateLimiterListData = new RateLimiterListData();
+				rateLimiterListData.setRateLimiter(RateLimiter.create(1 / timeWindow));
+				// immediately burn the permit for the preApiCallRateLimiter
+				rateLimiterListData.getRateLimiter().acquire();
+				rateLimiterListData.setNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(2)));
+				rateLimiterListData.setMaxNumOfCalls(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit").get(0).split("[:,]")).get(2)));
+				rateLimiterListData.setTimeWindowInSeconds(Integer.parseInt(Arrays.asList(headers.get("X-App-Rate-Limit-Count").get(0).split("[:,]")).get(3)));
 
-			logger.debug("appLongTimeWindow = " + timeWindow +
-			"\nappLongNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
-			"\nappLongMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
-			"\nappLongTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
+				logger.debug("appLongTimeWindow = " + timeWindow +
+						"\nappLongNumOfCalls = " + rateLimiterListData.getNumOfCalls() +
+						"\nappLongMaxNumOfCalls = " + rateLimiterListData.getMaxNumOfCalls() +
+						"\nappLongTimeWindowInSeconds = " + rateLimiterListData.getTimeWindowInSeconds());
 
-			rateLimiterList.put(METHOD.API_LONG, rateLimiterListData);
+				rateLimiterList.put(METHOD.API_LONG, rateLimiterListData);
+			}
+			// else, we're in retry logic and don't have headers to instantiate the Rate Limiter. Wait for the next call and it should correct itself
+			else
+			{
+				logger.error("In retry logic and don't have headers ton instantiate Rate Limiter");
+			}
 		}
 		// if api long was on list and the method wasn't static, update the number of calls it's made within the time window
 		else if (method != METHOD.STATIC)

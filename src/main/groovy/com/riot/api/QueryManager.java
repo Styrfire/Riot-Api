@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.ResponseErrorHandler;
 import org.springframework.web.client.RestTemplate;
 
@@ -93,13 +94,33 @@ class QueryManager
 			catch (HttpClientErrorException e)
 			{
 				logger.error("Status Code: " + e.getStatusCode().value(), e);
-				if (e.getStatusCode().value() != 504 || count >= maxTries)
+				if (count >= maxTries)
 				{
+					logger.error("Max tries (" + maxTries + ") exceeded");
 					RiotExceptionCreator.throwException(e.getStatusCode().value());
 					return null;
 				}
 				else
+				{
+					rateLimiter.postApiCallRateLimit(method, null);
+					logger.error("Retrying Query...");
 					count++;
+				}
+			}
+			catch (ResourceAccessException e)
+			{
+				logger.error("Oops... Something went wrong...", e);
+				if (count >= maxTries)
+				{
+					logger.error("Max tries (" + maxTries + ") exceeded");
+					throw new RiotApiException("Oops... Something went wrong...");
+				}
+				else
+				{
+					rateLimiter.postApiCallRateLimit(method, null);
+					logger.error("Retrying Query...");
+					count++;
+				}
 			}
 			catch (Exception e)
 			{
