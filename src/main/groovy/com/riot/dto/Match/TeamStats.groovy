@@ -2,20 +2,20 @@ package com.riot.dto.Match
 
 class TeamStats
 {
-	boolean firstDragon
-	boolean firstInhibitor
-	List<TeamBans> bans
-	int baronKills
-	boolean firstRiftHerald
-	boolean firstBaron
+	int towerKills
 	int riftHeraldKills
 	boolean firstBlood
-	int teamId
+	int inhibitorKills
+	List<TeamBans> bans
+	boolean firstBaron
+	boolean firstDragon
+	int dominionVictoryScore
+	int dragonKills
+	int baronKills
+	boolean firstInhibitor
 	boolean firstTower
 	int vilemawKills
-	int inhibitorKills
-	int towerKills
-	int dominionVictoryScore
+	boolean firstRiftHerald
+	int teamId
 	String win
-	int dragonKills
 }
