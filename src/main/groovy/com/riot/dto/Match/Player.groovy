@@ -2,12 +2,12 @@ package com.riot.dto.Match
 
 class Player
 {
+	int profileIcon
+	String accountId //encrypted
+	String matchHistoryUri
+	String currentAccountId //encrypted
 	String currentPlatformId
 	String summonerName
-	String matchHistoryUri
-	String platformId
-	String currentAccountId //encrypted
-	int profileIcon
 	String summonerId //encrypted
-	String accountId //encrypted
+	String platformId
 }

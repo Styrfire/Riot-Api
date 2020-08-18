@@ -2,14 +2,14 @@ package com.riot.dto.Match
 
 class MatchParticipantFrame
 {
-	int totalGold
-	int teamScore
 	int participantId
-	int level
-	int currentGold
 	int minionsKilled
+	int teamScore
 	int dominionScore
-	MatchPosition position
+	int totalGold
+	int level
 	int xp
+	int currentGold
+	MatchPosition position
 	int jungleMinionsKilled
 }

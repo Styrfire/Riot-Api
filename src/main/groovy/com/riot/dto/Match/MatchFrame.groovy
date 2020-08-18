@@ -2,7 +2,7 @@ package com.riot.dto.Match
 
 class MatchFrame
 {
-	long timestamp
-	Map<Integer, MatchParticipantFrame> participantFrames
+	Map<String, MatchParticipantFrame> participantFrames
 	List<MatchEvent> events
+	long timestamp
 }
