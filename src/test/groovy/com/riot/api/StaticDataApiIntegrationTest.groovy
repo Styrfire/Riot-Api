@@ -7,6 +7,17 @@ import spock.lang.Specification
 class StaticDataApiIntegrationTest extends Specification
 {
 	@Ignore
+	def "test getStaticLastPatchVersion"()
+	{
+		given:
+			RiotApi api = new RiotApi("API_KEY")
+		when:
+			String patchVersion = api.getStaticLastPatchVersion()
+		then:
+			patchVersion != null
+	}
+
+	@Ignore
 	def "test getStaticChampionInfoById"()
 	{
 		given:

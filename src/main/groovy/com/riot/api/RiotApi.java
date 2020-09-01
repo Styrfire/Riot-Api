@@ -50,18 +50,23 @@ public class RiotApi
 		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId);
 	}
 
+	public MatchList getMatchListByAccountId(String encryptedAccountId, Integer[] championIds, Integer[] rankedQueues, Integer[] seasons, Long beginTime, Long endTime, Integer beginIndex, Integer endIndex) throws RiotApiException
+	{
+		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
+	}
+
 	public List<ChampionMastery> getChampionMasteriesBySummonerId(long summonerId) throws RiotApiException
 	{
 		return championMasteryApi.getChampionMasteriesBySummonerId(queryManager, summonerId);
 	}
 
+	public String getStaticLastPatchVersion() throws RiotApiException
+	{
+		return staticDataApi.getStaticLastPatchVersion(queryManager);
+	}
+
 	public ChampionList getStaticChampionInfo(String patchVersion) throws RiotApiException
 	{
 		return staticDataApi.getStaticChampionInfo(queryManager, patchVersion);
-	}
-
-	public MatchList getMatchListByAccountId(String encryptedAccountId, Integer[] championIds, Integer[] rankedQueues, Integer[] seasons, Long beginTime, Long endTime, Integer beginIndex, Integer endIndex) throws RiotApiException
-	{
-		return matchApi.getMatchListByAccountId(queryManager, encryptedAccountId, championIds, rankedQueues, seasons, beginTime, endTime, beginIndex, endIndex);
 	}
 }
