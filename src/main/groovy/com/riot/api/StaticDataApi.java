@@ -7,9 +7,20 @@ import com.riot.exception.RiotApiException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 class StaticDataApi
 {
 	private static Logger logger = LoggerFactory.getLogger(StaticDataApi.class);
+
+	String getStaticLastPatchVersion(QueryManager queryManager) throws RiotApiException
+	{
+		String queryString = "https://ddragon.leagueoflegends.com/api/versions.json";
+
+		String response = queryManager.query(queryString, METHOD.STATIC);
+
+		return new Gson().fromJson(response, List.class).get(0).toString();
+	}
 
 	ChampionList getStaticChampionInfo(QueryManager queryManager, String patchVersion) throws RiotApiException
 	{
